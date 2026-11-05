@@ -91,8 +91,8 @@ let md="",headings=[],topics=[],chapters=[],chapterIds=[],systems=[];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
 function renderMarkdown(text){
- const lines=text.replace(/\r/g,"").split("\n"),out=[];let p=[],listType="",items=[],hIndex=0,topicIndex=0,currentChapter="";
- const flushP=()=>{if(p.length){const t=p.join(" ").trim(),cls=t.startsWith("【分析】")?"analysis":"";out.push('<p class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</p>');p=[];}};
+ const lines=text.replace(/\r/g,"").split("\n"),out=[];let p=[],listType="",items=[],hIndex=0,topicIndex=0,pIndex=0,currentChapter="";
+ const flushP=()=>{if(p.length){const t=p.join(" ").trim(),cls=t.startsWith("【分析】")?"analysis":"";out.push('<p id="history-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</p>');p=[];}};
  const flushList=()=>{if(items.length){out.push("<"+listType+">"+items.map(x=>"<li>"+inline(x)+"</li>").join("")+"</"+listType+">");items=[];listType="";}};
  const flush=()=>{flushP();flushList();};
  for(let i=0;i<lines.length;i++){
@@ -207,7 +207,7 @@ const comparisonSets=[
   {era:"清",name:"五刑正刑与派生刑并行",detail:"正刑为笞、杖、徒、流、死；另有充军、发遣、刺字等派生或附加刑。死刑分斩立决、绞立决与斩监候、绞监候。",distinction:"清代死刑“立决/监候”是执行方式分类；监候案件还需进入秋审等复核程序。",source:"充军、发遣、刺字"}
  ]},
  {id:"organs",title:"中央司法机关",intro:"重点记住机构名称变化，以及审判、复核、监察三种职能如何分工。",memory:"秦汉廷尉 → 北齐改大理寺 → 隋唐大理寺、刑部、御史台 → 宋增审刑院 → 元大宗正府、刑部、宣政院 → 明清刑部、大理寺、都察院三法司。",rows:[
-  {era:"西周",name:"大司寇、小司寇",detail:"大司寇、小司寇构成西周中央司法机构的重要组成部分，负责相关司法事务。",distinction:"记住西周司法官名称与后世廷尉、大理寺的制度阶段不同。",source:"司法机构"},
+  {era:"西周",name:"大司寇、小司寇",detail:"大司寇、小司寇构成西周中央司法机构的重要组成部分，负责相关司法事务。",distinction:"记住西周司法官名称与后世廷尉、大理寺的制度阶段不同。",source:"大司寇"},
   {era:"秦",name:"廷尉与御史大夫",detail:"廷尉是中央司法机关，审理地方上诉、郡县疑难案件及皇帝交办的诏狱；御史大夫也有重大案件司法审判权。",distinction:"廷尉是司法机关；御史大夫本为监察系统重要官员，但也参与重大案件审判。",source:"中央司法机关"},
   {era:"汉",name:"廷尉",detail:"汉朝中央司法机关以廷尉为核心，承担中央司法审判职能。",distinction:"秦汉都以廷尉为重要中央司法机关；后世北齐将廷尉改为大理寺。",source:"第二节 汉朝法律制度"},
   {era:"三国两晋南北朝",name:"廷尉—大理寺的名称变化",detail:"魏晋基本沿用汉制，中央司法机关仍为廷尉；北齐将廷尉改为大理寺；北周曾改称秋官大司寇。",distinction:"考试常考“北齐改廷尉为大理寺”；不要把北周的复古称谓与北齐制度混淆。",source:"中央司法机关的变化"},
@@ -254,10 +254,12 @@ const comparisonSets=[
 ];
 function findCompareSource(term){
  if(!term)return null;
- const clean=s=>s.replace(/^▶\s*/,"").replace(/\s+/g,"").trim();
+ const clean=s=>s.toLowerCase().replace(/[▶《》“”‘’"'\\s:：，,。；;（）()]/g,"");
  let h=headings.find(x=>clean(x.title).includes(clean(term)));
- if(!h)h=headings.find(x=>clean(x.title).includes(clean(term.replace(/[“”《》]/g,""))));
- return h?h.id:null;
+ if(h)return h.id;
+ const nodes=[...document.querySelectorAll("#analysisContent [data-search]")];
+ const n=nodes.find(x=>clean(x.dataset.search).includes(clean(term)));
+ return n?n.id:null;
 }
 function buildCompareFilters(){
  $("compareTopic").innerHTML='<option value="">全部比较专题</option>'+comparisonSets.map(s=>'<option value="'+s.id+'">'+esc(s.title)+'</option>').join("");
