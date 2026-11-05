@@ -293,6 +293,45 @@ button:focus-visible,input:focus-visible,select:focus-visible{
 @media print{.doc .doc-numbered-heading,.doc .doc-inline-analysis,.doc p.subject-definition,.doc p.subject-contrast,.doc p.subject-source,.doc p.subject-statute,.doc p.subject-recognition{background:none!important;color:#111!important;border-color:#888!important}}
 
 .doc p.subject-recognition:not(.crime-definition){border-left:3px solid #90aec9;background:#f7fafd;padding:10px 13px;border-radius:0 6px 6px 0}.doc p.subject-contrast{border-left:3px solid #c9a372;background:#fffaf3;padding:10px 13px;border-radius:0 6px 6px 0}
+
+/* 移动端阅读工具：目录按需展开，字号可调，避免正文被目录挤占 */
+.study-reader-tools .reader-font-tools{display:flex;gap:5px;align-items:center}
+.study-reader-tools .reader-font-tools button{min-width:40px}
+.doc.reader-font-large p,.doc.reader-font-large li,.doc.reader-font-large .study-item,.doc.reader-font-large .study-line{font-size:16px!important;line-height:2!important}
+.doc.reader-font-xl p,.doc.reader-font-xl li,.doc.reader-font-xl .study-item,.doc.reader-font-xl .study-line{font-size:18px!important;line-height:2.05!important}
+.doc .comparison-note{background:#fffbf3!important;border-left:3px solid #c99b61!important;border-radius:0 7px 7px 0;padding:12px 14px!important;margin:15px 0!important}
+.doc .comparison-note::before{content:"辨析 · 易混点";display:block;font-size:11px;font-weight:800;color:#986227;letter-spacing:.04em;margin-bottom:6px}
+.doc .comparison-note .study-item{background:#fff!important}
+.doc .study-item,.doc .study-line{break-inside:avoid-page;overflow-wrap:break-word}
+.doc ol li,.doc ul li{break-inside:avoid-page;orphans:2;widows:2}
+.doc h1,.doc h2,.doc h3,.doc h4,.doc h5,.doc h6{break-after:avoid-page;page-break-after:avoid}
+@media(max-width:850px){
+ .layout:not(.reader-nav-open)>.sidebar{display:none!important}
+ .layout.reader-nav-open>.sidebar{display:block!important;position:static!important;max-height:45vh;overflow:auto}
+ .layout.reader-nav-open>.sidebar .side-list{max-height:36vh}
+ .layout>.content{min-width:0!important;width:100%!important}
+ .study-reader-tools .reader-nav-toggle{display:inline-flex}
+ .doc{max-width:100%;min-width:0}
+}
+@media(min-width:851px){.study-reader-tools .reader-nav-toggle{display:none!important}}
+@media(max-width:520px){
+ .content-body.doc{padding:13px 13px 25px!important}
+ .doc p,.doc li{font-size:14px!important;line-height:1.95!important}
+ .doc.reader-font-large p,.doc.reader-font-large li{font-size:16px!important}
+ .doc.reader-font-xl p,.doc.reader-font-xl li{font-size:18px!important}
+ .doc .study-item,.doc .study-line{line-height:1.9!important}
+ .doc .comparison-note{padding:9px 10px!important}
+ .study-reader-tools{gap:6px;padding:9px!important}
+ .study-reader-tools .reader-font-tools{margin-left:auto}
+ .study-reader-tools .reader-font-tools button{min-width:39px}
+}
+@media print{
+ .doc .comparison-note{background:#fff!important;border-color:#777!important;color:#111!important}
+ .doc .comparison-note::before{color:#111!important}
+ .doc.reader-font-large p,.doc.reader-font-large li,.doc.reader-font-xl p,.doc.reader-font-xl li{font-size:11pt!important;line-height:1.7!important}
+ .layout:not(.reader-nav-open)>.sidebar{display:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -318,7 +357,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{
   <div class="result-box" id="searchResults"></div>
   <div class="layout">
    <aside class="sidebar"><div class="side-title">刑法学 · 二十一章目录</div><nav class="side-list" id="chapterNav"></nav></aside>
-   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·刑法学》</h2><p>总则与分则完整原文。点击左侧章节或使用全文检索定位知识点。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="crime-quickbar" id="crimeQuickbar" style="display:none"><label for="crimeJumpSelect">刑法分则 · 具体罪名速查</label><select id="crimeJumpSelect"><option value="">选择罪名以定位正文</option></select><small id="crimeJumpCount"></small></div><div class="study-reader-tools"><label for="readerChapterSelect">章节速览</label><select id="readerChapterSelect" aria-label="选择教材章节"><option value="">跳转到某一章</option></select><button type="button" id="readerFocusToggle" aria-pressed="false">专注阅读</button><button type="button" id="readerBackTop">回到本章顶部</button></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
+   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·刑法学》</h2><p>总则与分则完整原文。点击左侧章节或使用全文检索定位知识点。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="crime-quickbar" id="crimeQuickbar" style="display:none"><label for="crimeJumpSelect">刑法分则 · 具体罪名速查</label><select id="crimeJumpSelect"><option value="">选择罪名以定位正文</option></select><small id="crimeJumpCount"></small></div><div class="study-reader-tools"><label for="readerChapterSelect">章节速览</label><select id="readerChapterSelect" aria-label="选择教材章节"><option value="">跳转到某一章</option></select><button type="button" id="readerFocusToggle" aria-pressed="false">专注阅读</button><button type="button" id="readerBackTop">回到本章顶部</button><button type="button" class="reader-nav-toggle" id="readerNavToggle" aria-expanded="false">展开目录</button><span class="reader-font-tools"><button type="button" id="readerFontNormal" aria-label="标准字号">A</button><button type="button" id="readerFontLarge" aria-label="大字号">A＋</button></span></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
   </div>
  </section>
  <section class="panel" id="panel-chapters">
@@ -390,6 +429,11 @@ function initReaderTools(){
  select.onchange=()=>{if(!select.value)return;const el=$(select.value);if(el){el.scrollIntoView({behavior:"smooth",block:"start"});back.dataset.currentChapter=select.value;}};
  focus.onclick=()=>{const layout=doc.closest(".layout"),enabled=layout.classList.toggle("focus-reading");focus.setAttribute("aria-pressed",String(enabled));focus.textContent=enabled?"退出专注阅读":"专注阅读";};
  back.onclick=()=>{const id=back.dataset.currentChapter||select.value;const el=id?$(id):null;(el||doc).scrollIntoView({behavior:"smooth",block:"start"});};
+ const layout=doc.closest(".layout"),nav=$("readerNavToggle");
+ nav.onclick=()=>{const on=layout.classList.toggle("reader-nav-open");nav.setAttribute("aria-expanded",String(on));nav.textContent=on?"收起目录":"展开目录";};
+ $("readerFontNormal").onclick=()=>{doc.classList.remove("reader-font-large","reader-font-xl");};
+ $("readerFontLarge").onclick=()=>{const next=doc.classList.contains("reader-font-large")?"reader-font-xl":doc.classList.contains("reader-font-xl")?"reader-font-large":"reader-font-large";doc.classList.remove("reader-font-large","reader-font-xl");doc.classList.add(next);};
+
 }
 function studySubjectClass(t){if(/^【分析】(?:在认定|对于|注意|在司法实践中)/.test(t))return "subject-recognition";if(/^(?:注意区分|本罪与|区分的关键在于|二者的区别)/.test(t))return "subject-contrast";return "";}
 function renderMarkdown(text){
@@ -400,7 +444,8 @@ function renderMarkdown(text){
  const crimeName=t=>{const m=t.replace(/^【分析】/,"").trim().match(/^([^。！？；：]{2,65}?罪)(?:，?是指|，?即指|，?即)/);return m?m[1]:null;};
  const flushP=()=>{
   if(!p.length)return;
-  const t=joinStudyLines(p).trim(),cls=(t.startsWith("【分析】")?"analysis":"")+(studySubjectClass(t)?" "+studySubjectClass(t):"");
+  const isComparison=t.length>=50&&/(?:二者|两者|二者之间|区别在于|不同之处|相同之处|区分的关键|与.{2,24}的区别|概念—相同点—不同点)/.test(t.slice(0,155))&&/(?:区别|不同|相同|区分|界限)/.test(t.slice(0,210));
+  const t=joinStudyLines(p).trim(),cls=(t.startsWith("【分析】")?"analysis":"")+(studySubjectClass(t)?" "+studySubjectClass(t):"")+(isComparison?" comparison-note":"");
   if(inCrimeDetails){
    const name=crimeName(t);
    if(name){
