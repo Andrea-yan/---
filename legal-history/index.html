@@ -240,7 +240,7 @@ function repairBrokenSource(source){
    const left=out[out.length-1].trimEnd(),right=lines[i+1].trimStart();
    const future=lines.slice(i+2).map(x=>x.trim()).find(Boolean)||"";
    const shortStandalone=right.length<=32&&!/[。！？；：:，,]/.test(right)&&future.startsWith("【分析】");
-   const shortNumbered=/^\d+[.、．)]\s*/.test(left)&&left.length<65;
+   const shortNumbered=/^\d+[.、．)]\s*/.test(left)&&left.length<65&&!/[。！？；：]/.test(left);
    if(left.length>=30&&/[\u3400-\u9fff》]$/.test(left)&&/^[\u3400-\u9fff《]/.test(right)
     &&!/^(?:#{1,6}\s|▶|【分析】|第[一二三四五六七八九十]+[章节]|(?:其[一二三四]|首先|其次|最后)[，、])/.test(right)
     &&!shortStandalone&&!shortNumbered){
