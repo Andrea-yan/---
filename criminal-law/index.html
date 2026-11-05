@@ -41,7 +41,6 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
 .actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.actions button{border:1px solid var(--line);background:#f8fafc;color:#40566f;border-radius:7px;padding:7px 10px;font-size:11px}
 .actions button.show{background:var(--navy);color:#fff;border-color:var(--navy)}.actions button.done{background:#edf6f0;color:var(--green);border-color:#c7ddce}.actions button.review{background:#fff5e8;color:#94641f;border-color:#ecd6b4}
 .empty{padding:28px;text-align:center;color:var(--muted);font-size:13px}.foot{font-size:10px;color:#8b97a5;line-height:1.7;padding:12px 2px}
-body.closed .answer{display:none!important}
 @media(max-width:800px){.wrap{padding:12px}.layout{grid-template-columns:1fr}.sidebar{position:static}.chapter-list{display:flex;overflow-x:auto;max-height:none;gap:5px;white-space:nowrap}.chapter{width:auto;flex:0 0 auto;align-items:center}.chapter .count{display:none}.side-title{padding:10px 12px}.content-head{padding:13px}.content-body{padding:11px}.card{padding:12px}}
 @media(max-width:480px){header{padding:18px 14px}.wrap{padding:9px}.stats{gap:6px}.stat{padding:9px}.stat b{font-size:17px}.stat span{font-size:10px}.tools{padding:8px}.tools input{min-width:100%;width:100%}.tools select,.tools button{flex:1}.content-head h2{font-size:17px}.card h3{font-size:14px}}
 </style>
@@ -108,6 +107,7 @@ const KEY="law-criminal-sprint-v1";
 let progress={};let selected=1;let closed=false;let query="";let statusFilter="all";
 try{progress=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){progress={}}
 const $=id=>document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(progress))}catch(e){}}
 function state(id){return progress[id]?.status||"new"}
 function updateStats(){$("total").textContent=cards.length;$("mastered").textContent=cards.filter(c=>state(c.title)==="mastered").length;$("review").textContent=cards.filter(c=>state(c.title)==="review").length}
@@ -125,7 +125,7 @@ function renderCards(){
   const s=state(c.title),label=s==="mastered"?"已掌握":s==="review"?"需巩固":"未自评";
   const aOpen=!closed;
   const my=progress[c.title]?.draft||"";
-  return '<article class="card" data-title="'+c.title+'"><div class="card-top"><span class="tag">'+(c.priority===1?"优先背诵":"理解巩固")+'</span><span class="state">'+label+'</span></div><h3>'+c.title+'</h3><div class="question">'+c.q+'</div><div class="write"><textarea data-draft="'+c.title+'" placeholder="闭卷写出你的答案（可选，自动保存）">'+my+'</textarea><small>答题后再展开参考要点，检查遗漏。</small></div><div class="answer '+(aOpen?"open":"")+'" id="ans-'+encodeURIComponent(c.title)+'"><p>'+c.a+'</p><div class="keywords">'+c.k.map(k=>'<span class="keyword">'+k+'</span>').join("")+'</div>'+(c.tip?'<div class="tip">易错提醒：'+c.tip+'</div>':'')+'</div><div class="actions"><button class="show" data-show="'+c.title+'">'+(aOpen?"隐藏参考要点":"显示参考要点")+'</button><button class="done" data-rate="mastered" data-id="'+c.title+'">已掌握</button><button class="review" data-rate="review" data-id="'+c.title+'">需巩固</button></div></article>'
+  return '<article class="card" data-title="'+c.title+'"><div class="card-top"><span class="tag">'+(c.priority===1?"优先背诵":"理解巩固")+'</span><span class="state">'+label+'</span></div><h3>'+c.title+'</h3><div class="question">'+c.q+'</div><div class="write"><textarea data-draft="'+c.title+'" placeholder="闭卷写出你的答案（可选，自动保存）">'+esc(my)+'</textarea><small>答题后再展开参考要点，检查遗漏。</small></div><div class="answer '+(aOpen?"open":"")+'" id="ans-'+encodeURIComponent(c.title)+'"><p>'+c.a+'</p><div class="keywords">'+c.k.map(k=>'<span class="keyword">'+k+'</span>').join("")+'</div>'+(c.tip?'<div class="tip">易错提醒：'+c.tip+'</div>':'')+'</div><div class="actions"><button class="show" data-show="'+c.title+'">'+(aOpen?"隐藏参考要点":"显示参考要点")+'</button><button class="done" data-rate="mastered" data-id="'+c.title+'">已掌握</button><button class="review" data-rate="review" data-id="'+c.title+'">需巩固</button></div></article>'
  }).join("");
  document.querySelectorAll("[data-show]").forEach(b=>b.onclick=()=>{const el=$("ans-"+encodeURIComponent(b.dataset.show));el.classList.toggle("open");b.textContent=el.classList.contains("open")?"隐藏参考要点":"显示参考要点"});
  document.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{const id=b.dataset.id;progress[id]=progress[id]||{};progress[id].status=b.dataset.rate;save();renderCards();updateStats()});
