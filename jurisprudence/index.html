@@ -21,6 +21,24 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
 .pill{display:inline-block;border-radius:5px;padding:4px 7px;background:#eef3f7;color:#50657d;font-size:10px}.source-note{font-size:11px;color:#8793a1;line-height:1.7;padding:12px 2px}
 @media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{position:static}.side-list{max-height:250px}.stats{grid-template-columns:repeat(2,1fr)}.outline-grid,.topic-list{grid-template-columns:1fr}}
 @media(max-width:520px){header{padding:17px 14px}.wrap{padding:9px}.stats{gap:6px}.stat{padding:9px}.stat b{font-size:17px}.tools{padding:8px}.tools input{min-width:100%;width:100%}.content-body{padding:12px}.doc p,.doc li{font-size:13px}.content-head{padding:12px}.content-head h2{font-size:16px}}
+
+/* 重点层级与教材小标题：五科统一 */
+.doc .doc-subheading{
+ display:block;margin:22px 0 11px;padding:9px 13px;
+ color:#98521f;background:#fff6e9;border-left:4px solid #c47a35;
+ border-radius:0 8px 8px 0;font-size:17px;font-weight:800;
+ line-height:1.65;letter-spacing:.01em
+}
+.doc .answer-key{
+ color:#1f5f91;font-weight:800;
+ background:linear-gradient(transparent 62%,#dcecf8 62%);
+ padding:0 1px
+}
+.doc ol li::marker{color:#315f86;font-weight:800}
+.doc ol,.doc ul{padding-left:30px}
+.doc li{padding-left:5px;margin:8px 0;line-height:1.95}
+@media(max-width:520px){.doc .doc-subheading{font-size:16px;margin:18px 0 9px;padding:8px 11px}.doc ol,.doc ul{padding-left:25px}}
+
 </style>
 </head>
 <body>
@@ -64,10 +82,31 @@ function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
 function renderMarkdown(text){
  const lines=text.replace(/\r/g,"").split("\n"),out=[];let p=[],listType="",items=[],hIndex=0,topicIndex=0,currentChapter="";
  const flushP=()=>{if(p.length){const t=p.join(" ").trim();const cls=t.startsWith("【分析】")?"analysis":"";out.push('<p class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</p>');p=[];}};
- const flushList=()=>{if(items.length){out.push("<"+listType+">"+items.map(x=>"<li>"+inline(x)+"</li>").join("")+"</"+listType+">");items=[];listType="";}};
+ const renderListItem=x=>{
+  const raw=typeof x==="string"?x:x.text;
+  const value=typeof x==="string"?null:x.value;
+  const m=raw.match(/^(.{2,18}?)([，,：:；。])/);
+  const body=m&&m[1].length<=16
+   ?'<strong class="answer-key">'+inline(m[1])+'</strong>'+inline(m[2]+raw.slice(m[0].length))
+   :inline(raw);
+  return '<li'+(value!==null?' value="'+value+'"':'')+'>'+body+'</li>';
+ };
+ const flushList=()=>{if(items.length){out.push("<"+listType+">"+items.map(renderListItem).join("")+"</"+listType+">");items=[];listType="";}};
  const flush=()=>{flushP();flushList();};
  for(let i=0;i<lines.length;i++){
-  const t=lines[i].trim();if(!t){flush();continue;}
+  const t=lines[i].trim();if(!t){
+   const next=lines.slice(i+1).map(x=>x.trim()).find(Boolean)||"";
+   const isBareHeading=s=>!!s&&s.length<=30&&!/[。！？；：，、,.!?;:]/.test(s)&&!/^([#>*▶【]|\\d+[.、]|[-*]\\s|[A-DＡ-Ｄ][.．、]|第[一二三四五六七八九十百]+[章节])/.test(s);
+   const isIncomplete=s=>!!s&&!/[。！？；.!?;]/.test(s.slice(-1));
+   const nextList=/^(\\d+[.、]|[-*]\\s+|[A-DＡ-Ｄ][.．、])/.test(next);
+   if(listType&&next&&((listType==="ol"&&(/^(\\d+[.、]|[A-DＡ-Ｄ][.．、])/.test(next)))||(listType==="ul"&&/^[-*]\\s+/.test(next))))continue;
+   if(listType&&items.length&&isIncomplete(items[items.length-1].text)&&next&&!nextList&&!isBareHeading(next)&&!/^([#▶【>])/.test(next))continue;
+   if(p.length===1&&isBareHeading(p[0])){
+    const title=p.pop();
+    out.push('<h5 class="doc-subheading" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');
+   }else if(p.length&&isIncomplete(p[p.length-1])&&next&&!nextList&&!isBareHeading(next)&&!/^([#▶【>])/.test(next))continue;
+   flush();continue;
+  }
   const h=t.match(/^(#{1,6})\s*(.+)$/);
   if(h){
    flush();const level=h[1].length,title=h[2].trim().replace(/\s+#+$/,""),id="heading-"+(hIndex++);
@@ -85,8 +124,8 @@ function renderMarkdown(text){
    out.push('<div class="prompt" id="'+id+'" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</div>');continue;
   }
   const ol=t.match(/^\d+[.、]\s*(.+)$/),alpha=t.match(/^[A-DＡ-Ｄ][.．、]\s*(.+)$/),ul=t.match(/^[-*]\s+(.+)$/);
-  if(ol||alpha||ul){flushP();const typ=(ol||alpha)?"ol":"ul";if(listType&&listType!==typ)flushList();listType=typ;items.push((ol||alpha||ul)[1]);continue;}
-  if(listType){items[items.length-1]+=" "+t;}else{p.push(t);}
+  if(ol||alpha||ul){flushP();const typ=(ol||alpha)?"ol":"ul";if(listType&&listType!==typ)flushList();listType=typ;items.push({text:(ol||alpha||ul)[1],value:ol?Number(ol[0].match(/^\\d+/)[0]):null});continue;}
+  if(listType){items[items.length-1].text+=" "+t;}else{p.push(t);}
  }
  flush();return out.join("\n");
 }
