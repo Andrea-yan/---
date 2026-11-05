@@ -19,9 +19,9 @@
   ],
   "headingCount": 291,
   "topicPromptCount": 82,
-  "sourceLines": 2048,
+  "sourceLines": 2047,
   "sourceCharacters": 129060,
   "readChunks": 4,
   "checkedAt": "2026-11-05",
-  "note": "原文导入后按章节标题和考点提示生成索引；正文不作删减或改写。"
+  "note": "按原始Markdown的行尾换行格式补齐后导入；13章、标题与考点提示索引由原文生成，正文不作删减或改写。"
 }
