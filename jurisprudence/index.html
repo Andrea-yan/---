@@ -163,12 +163,37 @@ function studyParagraph(t){
  const x=t.slice(4),m=x.match(/^([^。！？]{6,90}[。！？])/);
  return '<strong class="analysis-label">【分析】</strong>'+(m&&/(是指|是|包括|分为|具有)/.test(m[1])&&!/（\d+）/.test(m[1])?'<strong class="key-sentence">'+inline(m[1])+'</strong>'+studyParts(x.slice(m[1].length)):studyParts(x));
 }
+/* 扫描教材中的误断空行：仅连接明显被截断的长句，保留原始 Markdown 文件。 */
+function repairBrokenSource(source){
+ const lines=String(source).replace(/\r/g,"").split("\n"),out=[];
+ for(let i=0;i<lines.length;i++){
+  if(!lines[i].trim()&&out.length&&i+1<lines.length){
+   const left=out[out.length-1].trimEnd(),right=lines[i+1].trimStart();
+   const future=lines.slice(i+2).map(x=>x.trim()).find(Boolean)||"";
+   const shortStandalone=right.length<=32&&!/[。！？；：:，,]/.test(right)&&future.startsWith("【分析】");
+   const shortNumbered=/^\d+[.、．)]\s*/.test(left)&&left.length<65;
+   if(left.length>=30&&/[\u3400-\u9fff》]$/.test(left)&&/^[\u3400-\u9fff《]/.test(right)
+    &&!/^(?:#{1,6}\s|▶|【分析】|第[一二三四五六七八九十]+[章节]|(?:其[一二三四]|首先|其次|最后)[，、])/.test(right)
+    &&!shortStandalone&&!shortNumbered){
+    out[out.length-1]=left+right;i++;continue;
+   }
+  }
+  out.push(lines[i]);
+ }
+ return out.join("\n");
+}
+function joinStudyLines(parts){
+ return parts.reduce((out,line)=>{
+  if(!out)return line;
+  return out+(/[\u3400-\u9fff]$/.test(out)&&/^[\u3400-\u9fff]/.test(line)?"":" ")+line;
+ },"");
+}
 function renderMarkdown(text){
- const lines=text.replace(/\r/g,"").split("\n"),out=[];
+ const lines=repairBrokenSource(text).split("\n"),out=[];
  let p=[],listType="",items=[],hIndex=0,topicIndex=0,pIndex=0,currentChapter="";
  const flushP=()=>{
   if(!p.length)return;
-  const t=p.join(" ").trim(),cls=t.startsWith("【分析】")?"analysis":"";
+  const t=joinStudyLines(p).trim(),cls=t.startsWith("【分析】")?"analysis":"";
   out.push('<p id="jurisprudence-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+studyParagraph(t)+'</p>');
   p=[];
  };
@@ -250,7 +275,7 @@ function renderMarkdown(text){
    items.push({text:(ol||alpha||ul)[2],value});
    continue;
   }
-  if(listType){items[items.length-1].text+=" "+t;}
+  if(listType){items[items.length-1].text=joinStudyLines([items[items.length-1].text,t]);}
   else{p.push(t);}
  }
  flush();return out.join("\n");
