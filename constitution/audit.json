@@ -1,0 +1,33 @@
+{
+  "builtAt": "2026-11-05",
+  "examAnalysis": {
+    "sourceFile": "26版考试分析【宪法学.md】",
+    "characters": 96238,
+    "lines": 1754,
+    "headingCount": 307,
+    "chapterCount": 5,
+    "chapters": [
+      "## 第一章 宪法基本理论",
+      "## 第二章 宪法的制定和实施",
+      "## 第三章 国家基本制度",
+      "## 第四章 公民的基本权利和义务",
+      "## 第五章 国家机构"
+    ]
+  },
+  "constitution": {
+    "version": "2018年3月11日修正",
+    "preambleParagraphs": 13,
+    "articleCount": 143,
+    "firstArticle": 1,
+    "lastArticle": 143,
+    "continuousArticleNumbers": true,
+    "chapterArticleCounts": {
+      "第一章 总纲": 32,
+      "第二章 公民的基本权利和义务": 24,
+      "第三章 国家机构": 84,
+      "第四章 国旗、国歌、国徽、首都": 3
+    },
+    "sourceUrl": "https://www.cac.gov.cn/2018-03/22/c_1122572643.htm"
+  },
+  "note": "考试分析原文来自用户资料库2026版Markdown；宪法按2018年修正文本解析，正文第1—143条连续无缺号。"
+}
