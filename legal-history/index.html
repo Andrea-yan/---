@@ -336,8 +336,9 @@ function renderMarkdown(text){
  let p=[],listType="",items=[],hIndex=0,topicIndex=0,pIndex=0,currentChapter="";
  const flushP=()=>{
   if(!p.length)return;
+  const t=joinStudyLines(p).trim();
   const isComparison=t.length>=50&&/(?:二者|两者|二者之间|区别在于|不同之处|相同之处|区分的关键|与.{2,24}的区别|概念—相同点—不同点)/.test(t.slice(0,155))&&/(?:区别|不同|相同|区分|界限)/.test(t.slice(0,210));
-  const t=joinStudyLines(p).trim(),cls=(t.startsWith("【分析】")?"analysis":"")+(studySubjectClass(t)?" "+studySubjectClass(t):"")+(isComparison?" comparison-note":"");
+  const cls=(t.startsWith("【分析】")?"analysis":"")+(studySubjectClass(t)?" "+studySubjectClass(t):"")+(isComparison?" comparison-note":"");
   out.push('<p id="history-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+studyParagraph(t)+'</p>');
   p=[];
  };
