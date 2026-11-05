@@ -4,148 +4,135 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#173451">
-<title>刑法学冲刺学习｜法硕专业课</title>
+<title>刑法学完整学习系统｜法硕专业课</title>
 <style>
-:root{--navy:#173451;--navy2:#244a6b;--ink:#243247;--muted:#6e7b8b;--paper:#f4f6f9;--line:#dce3eb;--gold:#c48a36;--green:#34745a;--red:#a75a4f}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif}
-button,input,textarea{font:inherit}button{cursor:pointer}
-header{background:linear-gradient(115deg,#142b43,#315776);color:#fff;padding:22px max(18px,calc((100vw - 1320px)/2))}
-.head{max-width:1320px;margin:auto}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:#d9e5ef;font-size:12px;letter-spacing:.4px}
-h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d5e0ea;line-height:1.7;margin:0;max-width:850px}
-.head-actions{display:flex;gap:8px;flex-wrap:wrap}.head-actions button{border:1px solid #7891a8;background:#ffffff12;color:white;padding:8px 11px;border-radius:8px;font-size:12px}
-.wrap{max-width:1320px;margin:auto;padding:18px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.stat{background:white;border:1px solid var(--line);border-radius:11px;padding:11px 14px}.stat b{display:block;font-size:20px;color:var(--navy)}.stat span{font-size:11px;color:var(--muted)}
-.tools{display:flex;gap:8px;flex-wrap:wrap;background:white;border:1px solid var(--line);padding:11px;border-radius:11px;margin-bottom:14px}
-.tools input{flex:1;min-width:200px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;outline:none}
-.tools select,.tools button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:8px 10px;font-size:12px}
-.tools button.active{background:var(--navy);color:white;border-color:var(--navy)}
-.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:14px;align-items:start}
-.sidebar,.content{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.sidebar{position:sticky;top:12px}.side-title{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--navy)}
-.chapter-list{padding:7px;max-height:calc(100vh - 180px);overflow:auto}
-.chapter{width:100%;display:flex;gap:9px;align-items:flex-start;text-align:left;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#536174;font-size:12px;line-height:1.45}
-.chapter:hover{background:#f4f7fa}.chapter.active{background:#eaf0f6;color:var(--navy);font-weight:700}
-.chapter small{color:#98a3b0;min-width:22px;font-size:10px}.chapter .count{margin-left:auto;color:#9aa5b1;font-size:10px}
-.content-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.content-head h2{font-size:19px;color:var(--navy);margin:0 0 4px}.content-head p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}
-.content-body{padding:14px 16px}
-.card{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:11px;background:#fff}
-.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.tag{font-size:10px;background:#fff4e2;color:#95641d;border-radius:5px;padding:4px 7px}.state{font-size:10px;color:#8592a1}
-.card h3{font-size:15px;color:var(--navy);margin:9px 0 7px}.question{font-size:13px;line-height:1.75;color:#34475c;margin-bottom:10px}
-.answer{display:none;border-left:3px solid var(--gold);background:#f8fafc;padding:12px 13px;border-radius:6px;margin-top:10px}
-.answer.open{display:block}.answer p{white-space:pre-line;font-size:13px;line-height:1.9;margin:0;color:#3d4d60}
-.keywords{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.keyword{font-size:10px;background:#edf2f7;color:#50657d;border-radius:5px;padding:4px 7px}
-.tip{font-size:11px;line-height:1.7;color:#795d31;background:#fff8ed;border:1px solid #f0e1c7;border-radius:7px;padding:9px 10px;margin-top:10px}
-.write{margin-top:11px}.write textarea{width:100%;min-height:68px;resize:vertical;border:1px solid var(--line);border-radius:7px;padding:9px;font-size:12px;line-height:1.6;outline:none}.write small{font-size:10px;color:#96a0ad}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.actions button{border:1px solid var(--line);background:#f8fafc;color:#40566f;border-radius:7px;padding:7px 10px;font-size:11px}
-.actions button.show{background:var(--navy);color:#fff;border-color:var(--navy)}.actions button.done{background:#edf6f0;color:var(--green);border-color:#c7ddce}.actions button.review{background:#fff5e8;color:#94641f;border-color:#ecd6b4}
-.empty{padding:28px;text-align:center;color:var(--muted);font-size:13px}.foot{font-size:10px;color:#8b97a5;line-height:1.7;padding:12px 2px}
-@media(max-width:800px){.wrap{padding:12px}.layout{grid-template-columns:1fr}.sidebar{position:static}.chapter-list{display:flex;overflow-x:auto;max-height:none;gap:5px;white-space:nowrap}.chapter{width:auto;flex:0 0 auto;align-items:center}.chapter .count{display:none}.side-title{padding:10px 12px}.content-head{padding:13px}.content-body{padding:11px}.card{padding:12px}}
-@media(max-width:480px){header{padding:18px 14px}.wrap{padding:9px}.stats{gap:6px}.stat{padding:9px}.stat b{font-size:17px}.stat span{font-size:10px}.tools{padding:8px}.tools input{min-width:100%;width:100%}.tools select,.tools button{flex:1}.content-head h2{font-size:17px}.card h3{font-size:14px}}
+:root{--navy:#173451;--navy2:#315776;--ink:#26364a;--muted:#718093;--paper:#f3f6f9;--line:#dce3eb;--gold:#c48a36}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif}button,input{font:inherit}button{cursor:pointer}
+header{background:linear-gradient(115deg,#142b43,#315776);color:#fff;padding:22px max(18px,calc((100vw - 1440px)/2))}.head{max-width:1440px;margin:auto}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:#d9e5ef;font-size:12px}.head-actions{display:flex;gap:8px;flex-wrap:wrap}.head-actions a{border:1px solid #7891a8;background:#ffffff12;color:white;padding:8px 11px;border-radius:8px;font-size:12px;text-decoration:none}
+h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d5e0ea;line-height:1.75;margin:0;max-width:1100px}
+.wrap{max-width:1440px;margin:auto;padding:18px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.stat{background:white;border:1px solid var(--line);border-radius:11px;padding:11px 14px}.stat b{display:block;font-size:20px;color:var(--navy)}.stat span{font-size:11px;color:var(--muted)}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;background:white;border:1px solid var(--line);padding:8px;border-radius:11px;margin-bottom:12px}.tab{border:1px solid transparent;background:transparent;color:#536174;border-radius:8px;padding:9px 13px;font-size:13px}.tab.active{background:var(--navy);color:white}.panel{display:none}.panel.active{display:block}
+.tools{display:flex;gap:8px;flex-wrap:wrap;background:white;border:1px solid var(--line);padding:11px;border-radius:11px;margin-bottom:12px}.tools input{flex:1;min-width:220px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;outline:none}.tools button{border:1px solid var(--line);background:white;color:var(--ink);border-radius:8px;padding:8px 10px;font-size:12px}
+.layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:13px;align-items:start}.sidebar,.content{background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden}.sidebar{position:sticky;top:10px}.side-title{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--navy)}.side-list{padding:7px;max-height:calc(100vh - 180px);overflow:auto}
+.side-btn{width:100%;display:flex;gap:8px;align-items:flex-start;text-align:left;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#536174;font-size:12px;line-height:1.5}.side-btn:hover{background:#f4f7fa}.side-btn.active{background:#eaf0f6;color:var(--navy);font-weight:700}.side-btn small{color:#98a3b0;min-width:25px;font-size:10px}
+.content-head{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.content-head h2{font-size:18px;color:var(--navy);margin:0 0 4px}.content-head p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}.content-body{padding:17px 20px}
+.doc h1,.doc h2,.doc h3,.doc h4,.doc h5,.doc h6{color:var(--navy);line-height:1.5;scroll-margin-top:14px}.doc h1,.doc h2{font-size:19px;border-bottom:1px solid #e8edf2;padding-bottom:8px;margin:25px 0 13px}.doc h3{font-size:17px;margin:21px 0 10px}.doc h4{font-size:16px;margin:20px 0 9px;padding:8px 11px;background:#f4f7fa;border-left:3px solid #7891a8;border-radius:0 7px 7px 0}.doc h5,.doc h6{font-size:14px;margin:16px 0 8px}.doc p{font-size:14px;line-height:1.95;margin:7px 0 12px;color:#3c4c5e}.doc ol,.doc ul{padding-left:27px;margin:8px 0 14px}.doc li{font-size:14px;line-height:1.9;padding-left:3px;margin:4px 0}.doc .analysis{background:#f8fafc;border-left:3px solid #b7c6d4;padding:10px 13px;border-radius:0 7px 7px 0}.doc .source-topic{color:#8a632e}.doc sup{font-size:10px}.doc .math{font-family:Georgia,serif;color:#40566d}.doc .chapter-heading{margin-top:34px;padding-top:12px;border-top:2px solid #e5ebf1}.doc blockquote{margin:10px 0;padding:10px 14px;border-left:3px solid #b7c6d4;background:#f8fafc;color:#536174}
+.result-box{display:none;background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:12px;padding:9px}.result-box.show{display:block}.result-box button{display:block;width:100%;text-align:left;border:0;border-radius:7px;background:transparent;padding:8px;color:#42566d;font-size:12px;line-height:1.6}.result-box button:hover{background:#f2f5f8}
+.chapter-grid,.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.chapter-card,.topic-card{background:white;border:1px solid var(--line);border-radius:10px;padding:12px 14px}.chapter-card h3{font-size:14px;color:var(--navy);margin:0 0 8px;line-height:1.6}.chapter-card .subhead{display:block;text-align:left;width:100%;border:0;border-radius:6px;background:transparent;padding:6px 7px;color:#5b6b7d;font-size:12px;line-height:1.5}.chapter-card .subhead:hover{background:#f2f5f8;color:var(--navy)}.chapter-card .more{font-size:10px;color:#99a3af;margin:5px 0 0 7px}
+.topic-card button{border:0;background:transparent;padding:0;text-align:left;width:100%;color:#334b63;font-size:13px;line-height:1.65}.topic-card button:hover{color:#9a6b2e}.topic-card small{display:block;color:#99a3af;font-size:10px;margin-top:6px}.pill{display:inline-block;border-radius:5px;padding:4px 7px;background:#eef3f7;color:#50657d;font-size:10px}.source-note{font-size:11px;color:#8793a1;line-height:1.7;padding:12px 2px}.empty{grid-column:1/-1;padding:20px;color:#8491a0;text-align:center;background:white;border:1px solid var(--line);border-radius:9px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{position:static}.side-list{max-height:260px}.stats{grid-template-columns:repeat(2,1fr)}.chapter-grid,.topic-grid{grid-template-columns:1fr}}
+@media(max-width:520px){header{padding:17px 14px}.wrap{padding:9px}.stats{gap:6px}.stat{padding:9px}.stat b{font-size:17px}.tools{padding:8px}.tools input{min-width:100%;width:100%}.content-body{padding:12px}.doc p,.doc li{font-size:13px}.content-head{padding:12px}.content-head h2{font-size:16px}}
 </style>
 </head>
 <body>
 <header><div class="head">
- <div class="topline"><span>法硕（非法学） · 专业课冲刺工具</span><div class="head-actions"><button id="modeBtn">切换闭卷模式</button><button id="exportBtn">导出学习记录</button></div></div>
- <h1>刑法学 · 知识学习与闭卷背诵</h1>
- <p class="sub">按《2026版考试分析》章节组织。先抓高频、易混和必须准确记忆的考点；先独立回忆，再展开要点核对。学习状态保存在当前设备浏览器。</p>
+ <div class="topline"><span>法硕（非法学） · 刑法学完整学习系统 2.0</span><div class="head-actions"><a href="/civil-law/">民法学</a><a href="/constitution/">宪法学</a><a href="/jurisprudence/">法理学</a><a href="/legal-history/">中国法制史</a><a href="/">返回学习主页</a></div></div>
+ <h1>刑法学 · 完整考试分析与知识索引</h1>
+ <p class="sub">严格以《2026版考试分析·刑法学》原文为主线，完整呈现刑法总则与分则全部章节内容。支持章节导航、考点标题速查和全文检索；本页面用于知识学习与原文背诵，不设置答题填写框或闭卷提交环节。</p>
 </div></header>
 <main class="wrap">
  <section class="stats">
-  <div class="stat"><b id="total">0</b><span>当前冲刺知识卡</span></div>
-  <div class="stat"><b id="mastered">0</b><span>已标记掌握</span></div>
-  <div class="stat"><b id="review">0</b><span>需要巩固</span></div>
+  <div class="stat"><b id="chapterStat">读取中</b><span>考试分析章节</span></div>
+  <div class="stat"><b id="sectionStat">读取中</b><span>小节标题</span></div>
+  <div class="stat"><b id="headingStat">读取中</b><span>全部标题层级</span></div>
+  <div class="stat"><b id="charStat">读取中</b><span>原文字符</span></div>
  </section>
- <section class="tools">
-  <input id="search" type="search" placeholder="搜索考点、概念或关键词">
-  <select id="filter"><option value="all">全部状态</option><option value="new">未自评</option><option value="review">需要巩固</option><option value="mastered">已掌握</option></select>
-  <button id="allMode" class="active">知识学习</button><button id="closedMode">闭卷背诵</button>
+ <nav class="tabs">
+  <button class="tab active" data-tab="analysis">考试分析全文</button>
+  <button class="tab" data-tab="chapters">21章知识目录</button>
+  <button class="tab" data-tab="topics">考点提示速查</button>
+ </nav>
+ <section class="panel active" id="panel-analysis">
+  <div class="tools"><input id="searchInput" type="search" placeholder="全文检索：输入罪名、犯罪构成、刑罚制度或任意关键词"><button id="clearSearch">清除检索</button><span class="pill" id="searchStatus">原文加载中</span></div>
+  <div class="result-box" id="searchResults"></div>
+  <div class="layout">
+   <aside class="sidebar"><div class="side-title">刑法学 · 二十一章目录</div><nav class="side-list" id="chapterNav"></nav></aside>
+   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·刑法学》</h2><p>总则与分则完整原文。点击左侧章节或使用全文检索定位知识点。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
+  </div>
  </section>
- <section class="layout">
-  <aside class="sidebar"><div class="side-title">刑法学 · 21章目录</div><nav class="chapter-list" id="chapters"></nav></aside>
-  <section class="content">
-   <div class="content-head"><div><h2 id="chapterTitle">第一章 绪论</h2><p id="chapterDesc">选择左侧章节，按卡片完成学习与自测。</p></div><span class="state" id="visibleCount"></span></div>
-   <div class="content-body" id="cards"></div>
-  </section>
+ <section class="panel" id="panel-chapters">
+  <div class="content-head" style="background:white;border:1px solid var(--line);border-radius:10px;margin-bottom:12px"><div><h2>刑法学21章知识目录</h2><p>按考试分析原文的章节和小节层级排列，点击任意标题直接跳转正文。</p></div><span class="pill">总则＋分则</span></div>
+  <div class="chapter-grid" id="chapterGrid"></div>
  </section>
- <p class="foot">说明：本页为40天冲刺版，先上线核心知识卡与闭卷自测，不堆叠复杂功能。卡片答案为依据2026版考试分析整理的复习提纲，不替代考试分析原文；涉及法条数字、构成要件和例外情形时，以考试分析原文及现行法条核验。学习记录仅保存在本设备；更换浏览器或设备前请导出备份。</p>
+ <section class="panel" id="panel-topics">
+  <div class="tools"><input id="topicSearch" type="search" placeholder="搜索考点提示标题，例如正当防卫、累犯、立功"><button id="clearTopics">清除检索</button><span class="pill" id="topicStatus">考点提示索引</span></div>
+  <div class="topic-grid" id="topicGrid"></div>
+ </section>
+ <p class="source-note">资料来源：用户资料库《26版考试分析【刑法学】.md》。正文按原文件顺序完整导入，不以知识卡摘要替代教材原文。知识目录和考点提示由原文标题自动生成。此页面不含答题填写框、答案输入区或自测提交功能。</p>
 </main>
 <script>
-const chapters=[
-"绪论","犯罪概念","犯罪构成","正当化事由","故意犯罪的停止形态","共同犯罪","罪数形态","刑事责任","刑罚概述","量刑","刑罚执行制度","刑罚消灭制度","刑法各论概述","危害国家安全罪","危害公共安全罪","破坏社会主义市场经济秩序罪","侵犯公民人身权利、民主权利罪","侵犯财产罪","妨害社会管理秩序罪","贪污贿赂罪","渎职罪"
-];
-const cards=[
-{ch:1,title:"罪刑法定原则",q:"简述罪刑法定原则的基本内容与体现。",a:"《刑法》第3条规定：法律明文规定为犯罪行为的，依照法律定罪处刑；法律没有明文规定为犯罪行为的，不得定罪处刑。\n基本规则：①法定化；②禁止事后法，但允许适用有利于被告人的新法，体现从旧兼从轻；③禁止类推；④禁止绝对不确定的刑罚；⑤明确性；⑥适当性。\n主要体现：刑事立法上，刑法总则规定一般规则、分则明确具体犯罪及法定刑；刑事司法上，废除类推制度，要求严格解释和适用刑法。",k:["《刑法》第3条","法定化","禁止事后法","禁止类推","明确性","适当性"],tip:"不要把“禁止事后法”绝对化；有利于被告人的新法可以适用。",priority:1},
-{ch:1,title:"刑法适用平等原则",q:"简述刑法适用平等原则的基本内容。",a:"《刑法》第4条规定：对任何人犯罪，在适用法律上一律平等，不允许任何人有超越法律的特权。对所有的人，不论其社会地位、民族、性别、职业、宗教信仰、财产状况如何，在定罪量刑以及行刑的标准上，都应平等地依照刑法规定处理，不允许歧视或者优待。",k:["《刑法》第4条","任何人","适用法律一律平等","不得有超越法律的特权"],priority:2},
-{ch:1,title:"罪责刑相适应原则",q:"简述罪责刑相适应原则的基本内容与体现。",a:"《刑法》第5条规定：刑罚的轻重，应当与犯罪分子所犯罪行和承担的刑事责任相适应。\n基本内容：①刑罚轻重与客观犯罪行为及其危害结果相适应；②刑罚轻重与犯罪人主观恶性、再次犯罪危险性相适应。\n主要体现：刑法分则根据犯罪性质、情节和危害程度规定法定刑；刑法总则规定量刑一般原则；对累犯从重处罚，对未成年人、自首、立功等依法从宽处理。",k:["《刑法》第5条","客观危害","主观恶性","人身危险性","罪刑均衡"],priority:2},
-{ch:2,title:"我国刑法中的犯罪定义",q:"简述我国刑法中的犯罪定义及其意义。",a:"《刑法》第13条规定，犯罪是危害国家主权、领土完整和安全，破坏社会秩序和经济秩序，侵犯公私财产、公民人身权利、民主权利和其他权利，以及其他危害社会的行为，依照法律应当受刑罚处罚；但是情节显著轻微危害不大的，不认为是犯罪。\n意义：该定义高度概括了各种具体犯罪的共同特征，兼顾犯罪的实质特征和形式特征，是形式与实质相统一的犯罪定义。",k:["《刑法》第13条","危害社会","依法应受刑罚处罚","但书","形式与实质相统一"],tip:"答题不能漏掉但书：“情节显著轻微危害不大的，不认为是犯罪”。",priority:1},
-{ch:2,title:"犯罪的三个基本特征",q:"简述犯罪的基本特征。",a:"①严重的社会危害性：犯罪是严重危害社会的行为，是犯罪的实质特征。\n②刑事违法性：犯罪是触犯刑法的行为，是严重社会危害性在刑法上的表现。\n③应受刑罚惩罚性：犯罪是应当受到刑罚惩罚的行为，是犯罪的法律后果特征。\n三者相互联系、不可分割，社会危害性是基础，刑事违法性是法律表现，应受刑罚惩罚性体现法律后果。",k:["社会危害性","刑事违法性","应受刑罚惩罚性"],priority:1},
-{ch:3,title:"犯罪构成的概念与共同要件",q:"简述犯罪构成的概念及共同要件。",a:"犯罪构成指刑法规定的成立犯罪必须具备的主观要件和客观要件的总和。\n共同要件包括：①犯罪客体；②犯罪客观方面；③犯罪主体；④犯罪主观方面。\n犯罪构成是成立犯罪的必备要件，其诸要件由刑法规定，是认定犯罪的法律标准；具备犯罪构成是适用刑罚的前提。",k:["刑法规定","成立犯罪","主观要件和客观要件","犯罪客体","客观方面","犯罪主体","主观方面"],tip:"四要件顺序要稳定：客体—客观方面—主体—主观方面。",priority:1},
-{ch:3,title:"不作为构成犯罪的条件",q:"简述不作为构成犯罪的条件。",a:"①行为人负有某种特定的义务。义务来源主要包括：法律明文规定；职务上或业务上的要求；法律地位或法律行为产生；先前行为引起。\n②行为人能够履行义务。若客观上不可能履行义务，不成立不作为犯罪。\n③行为人不履行特定义务，造成或者可能造成危害结果。",k:["特定义务","义务来源四类","能够履行","不履行义务","危害结果"],tip:"容易漏掉“能够履行义务”；有义务但客观不能履行，不成立不作为犯罪。",priority:1},
-{ch:3,title:"直接故意与间接故意",q:"简述直接故意与间接故意的概念及区别。",a:"直接故意：明知自己的行为会发生危害社会的结果，并且希望这种结果发生。\n间接故意：明知自己的行为可能发生危害社会的结果，并且放任这种结果发生。\n核心区别：认识因素上，直接故意通常认识到结果必然或可能发生，间接故意认识到结果可能发生；意志因素上，直接故意是希望，间接故意是放任。",k:["直接故意：明知＋希望","间接故意：明知可能＋放任","意志因素是核心"],priority:1},
-{ch:3,title:"过于自信的过失与间接故意",q:"比较过于自信的过失与间接故意。",a:"相同点：行为人都预见到危害结果可能发生，都不希望危害结果发生。\n不同点：①认识程度不同：过于自信的过失是预见行为可能发生危害结果；间接故意是明知自己的行为可能发生危害结果。②意志态度不同：过于自信的过失对结果持否定态度，轻信能够避免；间接故意对结果持放任态度。",k:["相同：预见可能发生","过失：否定＋轻信避免","间接故意：放任"],tip:"比较题按“概念—相同点—不同点”组织，重点区分意志因素。",priority:1},
-{ch:3,title:"刑事责任年龄",q:"简述我国刑法关于刑事责任年龄的规定。",a:"①已满16周岁的人犯罪，应当负刑事责任。\n②已满14周岁不满16周岁的人，犯故意杀人、故意伤害致人重伤或者死亡、强奸、抢劫、贩卖毒品、放火、爆炸、投放危险物质罪的，应当负刑事责任。\n③已满12周岁不满14周岁的人，犯故意杀人、故意伤害罪，致人死亡或者以特别残忍手段致人重伤造成严重残疾，情节恶劣，经最高人民检察院核准追诉的，应当负刑事责任。\n④对依照上述规定追究刑事责任的不满18周岁的人，应当从轻或者减轻处罚。",k:["16周岁：完全负刑事责任","14—16周岁：八种行为","12—14周岁：严重情形＋最高检核准","未满18周岁：应当从轻或减轻"],tip:"14—16周岁规定的是八种犯罪行为，不是简单限定为八个罪名。",priority:1},
-{ch:3,title:"单位犯罪的处罚",q:"简述单位犯罪的处罚原则。",a:"根据《刑法》第31条，单位犯罪的，对单位判处罚金，并对其直接负责的主管人员和其他直接责任人员判处刑罚。一般实行双罚制。刑法分则有特别规定只实行单罚制的，依照特别规定处理。",k:["《刑法》第31条","单位判处罚金","主管人员和直接责任人员判处刑罚","一般双罚制","特别规定单罚制"],priority:2},
-{ch:4,title:"正当防卫的成立条件",q:"简述正当防卫的成立条件。",a:"①起因条件：存在不法侵害。②时间条件：不法侵害正在进行。③对象条件：针对不法侵害者本人。④主观条件：具有保护合法权益免受不法侵害的目的。⑤限度条件：不能明显超过必要限度造成重大损害。",k:["起因：不法侵害","时间：正在进行","对象：侵害者本人","主观：防卫目的","限度：不能明显超限造成重大损害"],tip:"五个条件不要混淆；防卫挑拨、事前防卫、事后防卫均需重点辨析。",priority:1},
-{ch:4,title:"紧急避险的成立条件",q:"简述紧急避险的成立条件。",a:"①起因条件：必须有危险发生。②时间条件：危险正在发生。③对象条件：针对第三人的合法利益。④主观条件：为使合法利益免受正在发生的危险。⑤限制条件：迫不得已。⑥限度条件：不能超过必要限度造成不应有的危害，所造成的损害应小于所保护的权益。⑦特别限制：避免本人危险的规定，不适用于职务上、业务上负有特定责任的人。",k:["危险正在发生","第三人合法利益","避险目的","迫不得已","损害小于保护权益","特定职责人员限制"],priority:1},
-{ch:5,title:"犯罪预备、未遂与中止",q:"简述犯罪预备、犯罪未遂、犯罪中止的概念及核心区别。",a:"犯罪预备：为了犯罪，准备工具、制造条件；因意志以外原因未能着手实行。\n犯罪未遂：已经着手实行犯罪，由于犯罪分子意志以外原因而未得逞。\n犯罪中止：在犯罪过程中，自动放弃犯罪或者自动有效地防止犯罪结果发生。\n区分关键：是否着手实行、未得逞原因是否意志以外、是否自动放弃或有效防止结果。",k:["预备：准备工具、制造条件，尚未着手","未遂：已经着手，意志以外原因未得逞","中止：自动放弃或有效防止结果"],tip:"主观意志是区分未遂与中止的关键；着手是区分预备与未遂的关键。",priority:1},
-{ch:6,title:"共同犯罪人的种类",q:"简述主犯、从犯、胁从犯、教唆犯的概念及处罚要点。",a:"主犯：组织、领导犯罪集团进行犯罪活动或者在共同犯罪中起主要作用的犯罪分子。\n从犯：在共同犯罪中起次要或者辅助作用的犯罪分子；应当从轻、减轻处罚或者免除处罚。\n胁从犯：被胁迫参加犯罪的犯罪分子；应当按照其犯罪情节减轻处罚或者免除处罚。\n教唆犯：故意引起他人实行犯罪决意的人；应当按照其在共同犯罪中所起的作用处罚。",k:["主犯：组织领导／主要作用","从犯：次要／辅助作用","胁从犯：被胁迫参加","教唆犯：故意引起犯罪决意"],priority:1},
-{ch:7,title:"想象竞合犯",q:"简述想象竞合犯的概念、特征和处断原则。",a:"想象竞合犯，是指行为人实施一个犯罪行为同时触犯数个罪名的情况。其核心特征是一个行为触犯数个罪名，属于实质的一罪。处断原则：从一重罪处罚。",k:["一个行为","数个罪名","实质的一罪","从一重罪处罚"],priority:1},
-{ch:7,title:"继续犯与连续犯",q:"区分继续犯与连续犯。",a:"继续犯：犯罪行为从着手实行到行为终了，犯罪行为与不法状态在一定时间内同时处于持续状态。通常以一罪论处。\n连续犯：基于同一或者概括的犯罪故意，连续实施数个独立的犯罪行为，触犯同一罪名。通常以一罪论处。\n关键区别：继续犯是一个犯罪行为及不法状态持续；连续犯是数个独立行为连续实施。",k:["继续犯：一个行为持续","连续犯：数个独立行为","同一或概括故意"],priority:2},
-{ch:9,title:"刑罚的概念与特征",q:"简述刑罚的概念与特征。",a:"刑罚，是刑法中明文规定的由国家审判机关依法对犯罪人所适用的限制或剥夺其某种权益的最严厉的法律制裁方法。\n特征：①以限制或剥夺犯罪人权益为内容，具有最严厉性；②适用对象只能是犯罪人；③适用主体只能是国家审判机关；④种类及适用标准以刑法明文规定为依据；⑤适用程序依照刑事诉讼程序；⑥以国家强制力作保障。",k:["国家审判机关","依法适用","犯罪人","限制或剥夺权益","最严厉的法律制裁"],priority:2},
-{ch:10,title:"一般累犯的构成条件",q:"简述一般累犯的概念及构成条件。",a:"一般累犯，是指被判处有期徒刑以上刑罚的犯罪分子，在刑罚执行完毕或者赦免以后，5年内再犯应当判处有期徒刑以上刑罚之罪的情形。\n构成条件：①前罪和后罪发生时，犯罪人均已满18周岁；②前罪和后罪均为故意犯罪；③前罪被判处有期徒刑以上刑罚，后罪应当判处有期徒刑以上刑罚；④后罪发生在前罪刑罚执行完毕或者赦免以后5年以内。过失犯罪和不满18周岁的人犯罪除外。",k:["成年：前后罪均已满18周岁","故意犯罪","前后罪均有期徒刑以上","刑罚执行完毕／赦免后5年内"],tip:"5年从主刑执行完毕之日起计算；后罪发生在前罪刑罚执行期间，适用数罪并罚，不构成累犯。",priority:1},
-{ch:10,title:"一般自首的成立条件",q:"简述一般自首的概念及成立条件。",a:"一般自首，是指犯罪分子犯罪以后自动投案，如实供述自己罪行的行为。\n成立条件：①自动投案；②如实供述自己的罪行。自动投案要求在犯罪事实或者犯罪嫌疑人尚未被司法机关发觉，或者虽被发觉但尚未受到讯问、未被采取强制措施时，主动、直接投案；法律和司法解释规定的视为自动投案情形也应掌握。",k:["犯罪以后","自动投案","如实供述自己的罪行"],tip:"自首的两个条件缺一不可；自动投案后翻供的，原则上不能认定自首，但一审判决前又如实供述的除外。",priority:1},
-{ch:10,title:"立功的概念",q:"简述立功的概念及其主要表现。",a:"立功，是指犯罪分子有揭发他人犯罪行为，查证属实，或者提供重要线索，从而得以侦破其他案件等行为。重点掌握一般立功与重大立功的认定及其从宽处罚规则。",k:["揭发他人犯罪行为","查证属实","提供重要线索","侦破其他案件"],priority:2},
-{ch:10,title:"我国刑法中的数罪并罚原则",q:"简述我国刑法中的数罪并罚原则及其特点。",a:"我国确立了以限制加重原则为主、以吸收原则和并科原则为补充的折中原则。\n特点：①兼采吸收、限制加重、并科原则；②各种原则分别适用于特定刑种，并非普遍适用；③限制加重原则居于主导地位；④吸收原则与限制加重原则的适用效力互相排斥，并科原则相对独立。",k:["折中原则","限制加重为主","吸收原则为辅","并科原则为辅","不同刑种分别适用"],priority:1},
-{ch:10,title:"缓刑的适用条件",q:"简述一般缓刑的适用条件。",a:"①被判处拘役或者3年以下有期徒刑。②犯罪情节较轻、有悔罪表现、没有再犯罪的危险，且宣告缓刑对所居住社区没有重大不良影响；上述实质条件须同时具备。③不是累犯或者犯罪集团的首要分子。\n对符合条件的不满18周岁的人、怀孕的妇女和已满75周岁的人，应当宣告缓刑。",k:["拘役或3年以下有期徒刑","犯罪情节较轻","悔罪表现","无再犯罪危险","社区无重大不良影响","排除累犯和犯罪集团首要分子"],priority:1},
-{ch:11,title:"减刑与假释：先抓核心区别",q:"复习减刑、假释时，首先应区分二者的制度功能。",a:"减刑：对正在执行刑罚的犯罪分子，因符合法定条件而适当减轻原判刑罚。\n假释：对被判处有期徒刑、无期徒刑的犯罪分子，在执行一定刑期后，因认真遵守监规、接受教育改造，确有悔改表现，没有再犯罪危险，而附条件提前释放。\n本卡用于建立概念框架；具体对象条件、实质条件、限制条件、考验期及法律后果，应分别对照考试分析逐项背诵。",k:["减刑：减轻原判刑罚","假释：附条件提前释放","对象条件","实质条件","限制条件","考验期"],priority:2},
-{ch:12,title:"追诉时效期限",q:"简述我国刑法规定的追诉期限。",a:"犯罪经过下列期限不再追诉：①法定最高刑不满5年有期徒刑的，经过5年；②法定最高刑为5年以上不满10年有期徒刑的，经过10年；③法定最高刑为10年以上有期徒刑的，经过15年；④法定最高刑为无期徒刑、死刑的，经过20年。20年以后认为必须追诉的，须报请最高人民检察院核准。",k:["不满5年：5年","5年以上不满10年：10年","10年以上：15年","无期／死刑：20年","最高检核准"],tip:"按法定最高刑对应期限，不是按实际宣告刑计算。",priority:1},
-{ch:13,title:"刑法总则与分则的关系",q:"简述刑法总则与分则的关系。",a:"刑法总则规定犯罪和刑罚的一般原理、原则，是定罪与量刑中的共性问题；刑法分则规定各种具体犯罪的犯罪构成条件及刑罚，包括罪状、罪名和法定刑。\n二者是抽象规定与具体规定的关系：总则指导分则的运用与研究，分则使总则的规定具体化；认定和处罚犯罪时，必须同时考虑总则的一般规定和分则的具体规定。",k:["总则：一般原理、原则","分则：具体犯罪及刑罚","抽象与具体","总则指导分则","分则具体化总则"],priority:2}
-,
-{ch:14,title:"危害国家安全罪的概念和共同特征",q:"简述危害国家安全罪的概念和共同特征。",a:"概念：故意危害中华人民共和国的主权、领土完整和安全，分裂国家，颠覆国家政权、推翻社会主义制度的行为。\n共同特征：①客体是国家安全；②客观方面是实施危害国家安全的行为；③主体是自然人；④主观方面为故意。",k:["国家安全","故意","自然人主体","国家主权、领土完整和安全"],priority:2},
-{ch:15,title:"危险作业罪",q:"简述危险作业罪的概念，并注意其与重大责任事故罪的区分。",a:"考试分析中的概念：危险作业罪，是指在生产、作业中违反有关安全管理的规定，实施具有发生重大伤亡事故或者其他严重后果的现实危险的特定行为。\n复习重点：把握“违反安全管理规定”“现实危险”“特定行为”三个关键词；并与已经发生重大伤亡事故或其他严重后果的重大责任事故罪区分。",k:["生产、作业中","违反安全管理规定","现实危险","特定行为","与重大责任事故罪区分"],tip:"考试分析对本罪作概念性说明；具体客观行为类型还应结合《刑法》第134条之一原文核对。",priority:1},
-{ch:16,title:"破坏社会主义市场经济秩序罪的共同特征",q:"简述破坏社会主义市场经济秩序罪的概念和共同特征。",a:"概念：违反国家市场经济管理法规，破坏国家经济管理活动，使社会主义市场经济秩序遭受严重损害的行为。\n共同特征：①客体是我国市场经济秩序；②客观方面表现为违反国家市场经济管理法规、破坏国家经济管理活动并严重损害市场经济秩序；③主体是个人或单位；④主观方面多为故意，一般具有非法获利目的。",k:["市场经济秩序","违反市场经济管理法规","个人或单位","多为故意","非法获利目的"],priority:2},
-{ch:17,title:"侵犯公民人身权利、民主权利罪的共同特征",q:"简述侵犯公民人身权利、民主权利罪的概念和共同特征。",a:"概念：侵犯公民的人身权利和与人身直接有关的权利，非法剥夺或者妨碍公民自由行使依法享有的管理国家事务和参加国家政治活动的权利，以及妨害公民婚姻、家庭权利的行为。\n共同特征：①客体是公民人身权利与民主权利；②客观方面是实施侵犯上述权利的行为；③主体多为一般主体，少数为特殊主体；④主观方面多为故意，极个别罪可由过失构成。",k:["人身权利","民主权利","一般主体为主","主观多为故意"],priority:2},
-{ch:18,title:"侵犯财产罪的共同特征",q:"简述侵犯财产罪的概念和共同特征。",a:"概念：故意非法占有、挪用公私财物，或者故意破坏生产经营、毁坏公私财物的行为。\n共同特征：①客体是公共财产和公民私人财产所有权；②客观方面表现为非法占有、挪用或者毁坏公私财物；③主体一般为自然人，个别犯罪单位也可构成；④主观方面为故意。",k:["财产所有权","非法占有","挪用","毁坏财物","故意"],priority:2},
-{ch:18,title:"抢劫罪的概念与转化型抢劫",q:"简述抢劫罪的概念，并说明盗窃、诈骗、抢夺转化为抢劫罪的条件。",a:"抢劫罪：以非法占有为目的，以暴力、胁迫或者其他方法，强行劫取公私财物的行为。\n转化型抢劫：实施盗窃、诈骗、抢夺行为，为窝藏赃物、抗拒抓捕或者毁灭罪证，而当场使用暴力或者以暴力相威胁的，依法以抢劫罪定罪处罚；还应结合司法解释把握接近数额较大、入户或公共交通工具内实施、使用凶器等情形。",k:["非法占有目的","暴力、胁迫或其他方法","强行劫取财物","窝藏赃物","抗拒抓捕","毁灭罪证","当场使用暴力／威胁"],priority:1},
-{ch:19,title:"妨害社会管理秩序罪的共同特征",q:"简述妨害社会管理秩序罪的概念和共同特征。",a:"概念：妨害国家机关对社会的管理活动，破坏社会正常秩序，情节严重的行为。\n共同特征：①客体是国家机关对社会的管理秩序；②客观方面表现为妨害国家机关依法管理、破坏社会正常秩序且情节严重；③主体多为自然人，一般主体占多数，少数为特殊主体，极个别可由单位构成；④主观方面大多数为故意，个别犯罪可由过失构成。",k:["社会管理秩序","妨害依法管理活动","情节严重","主体类型多样"],priority:2},
-{ch:20,title:"贪污贿赂罪的共同特征",q:"简述贪污贿赂罪的概念和共同特征。",a:"概念：国家工作人员（行贿类犯罪除外）利用职务上的便利，非法占有、使用公共财物，索取、收受贿赂或者取得其他非法利益，破坏职务廉洁性的行为。\n共同特征：①客体是公务活动的廉洁性；②客观方面表现为贪污、挪用公款、受贿等行为；③主体多为国家工作人员，通常是特殊主体，少数罪由一般主体构成；④主观方面为故意。",k:["公务活动廉洁性","职务便利","国家工作人员为主","故意"],priority:2},
-{ch:21,title:"渎职罪的共同特征",q:"简述渎职罪的概念和共同特征。",a:"概念：国家机关工作人员在公务活动中滥用职权、玩忽职守、徇私舞弊，妨碍国家管理活动，致使公共财产或者国家与人民利益遭受重大损失的行为。\n共同特征：①客体是国家机关的正常活动；②客观方面表现为滥用职权、玩忽职守等并造成重大损失；③主体是国家机关工作人员；④主观方面包括故意和过失。",k:["国家机关正常活动","滥用职权／玩忽职守／徇私舞弊","国家机关工作人员","故意或过失"],priority:2},
-{ch:8,title:"刑事责任的解决方式",q:"简述刑事责任的解决方式。",a:"①定罪判刑：法院认定犯罪人有罪，并宣告适用相应刑罚。②定罪免刑：法院认定犯罪人有罪，但免除刑罚处罚。③消灭处理：行为已构成犯罪、应负刑事责任，但因法律规定的阻却刑事责任事由，使刑事责任归于消灭。④转移处理：行为人的刑事责任不由我国司法机关解决，而通过外交途径解决。",k:["定罪判刑","定罪免刑","消灭处理","转移处理"],priority:2}];
-const KEY="law-criminal-sprint-v1";
-let progress={};let selected=1;let closed=false;let query="";let statusFilter="all";
-try{progress=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){progress={}}
 const $=id=>document.getElementById(id);
-function esc(s){return String(s).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(progress))}catch(e){}}
-function state(id){return progress[id]?.status||"new"}
-function updateStats(){$("total").textContent=cards.length;$("mastered").textContent=cards.filter(c=>state(c.title)==="mastered").length;$("review").textContent=cards.filter(c=>state(c.title)==="review").length}
-function renderChapters(){
- $("chapters").innerHTML=chapters.map((name,i)=>{const n=i+1,count=cards.filter(c=>c.ch===n).length;return '<button class="chapter '+(selected===n?'active':'')+'" data-ch="'+n+'"><small>'+String(n).padStart(2,"0")+'</small><span>第'+n+'章 '+name+'</span><span class="count">'+(count||"")+'</span></button>'}).join("");
- document.querySelectorAll("[data-ch]").forEach(b=>b.onclick=()=>{selected=Number(b.dataset.ch);renderChapters();renderCards()});
+let md="",headings=[],topics=[],chapters=[],chapterIds=[];
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>").replace(/\^\{([^}]+)\}/g,"<sup>$1</sup>").replace(/\$([^$]+)\$/g,'<span class="math">$1</span>');}
+function renderMarkdown(text){
+ const lines=text.replace(/\r/g,"").split("\n"),out=[];let p=[],listType="",items=[],hIndex=0;
+ const flushP=()=>{if(p.length){const t=p.join(" ").trim(),cls=t.startsWith("【分析】")?"analysis":"";out.push('<p class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</p>');p=[];}};
+ const flushList=()=>{if(items.length){out.push("<"+listType+">"+items.map(x=>"<li>"+inline(x)+"</li>").join("")+"</"+listType+">");items=[];listType="";}};
+ const flush=()=>{flushP();flushList();};
+ for(let i=0;i<lines.length;i++){
+  const t=lines[i].trim();if(!t){flush();continue;}
+  const h=t.match(/^(#{1,6})\s*(.+)$/);
+  if(h){
+   flush();const level=h[1].length,title=h[2].trim().replace(/\s+#+$/,""),id="criminal-heading-"+(hIndex++);
+   const cm=title.match(/^(第[一二三四五六七八九十百]+章)\s*(.+)$/),isChapter=!!cm;
+   const sm=title.match(/第[一二三四五六七八九十百]+节/);
+   if(isChapter){const clean=title.split(/\s*[—–-]{2,}\s*/)[0].trim();chapterIds.push({title:clean,id});}
+   const currentChapter=chapterIds.length?chapterIds[chapterIds.length-1].title:"刑法学";
+   const rec={title,id,level,chapter:currentChapter,isChapter,isSection:!!sm};headings.push(rec);
+   if(/^▶\s*/.test(title)){topics.push({title:title.replace(/^▶\s*/,"").trim(),id,chapter:currentChapter});}
+   out.push('<h'+Math.min(level,6)+' id="'+id+'" class="'+(isChapter?"chapter-heading":"")+(topics.length&&topics[topics.length-1].id===id?" source-topic":"")+'" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h'+Math.min(level,6)+'>');continue;
+  }
+  const ol=t.match(/^\d+[.、]\s*(.+)$/),ul=t.match(/^[-*]\s+(.+)$/);
+  if(ol||ul){flushP();const typ=ol?"ol":"ul";if(listType&&listType!==typ)flushList();listType=typ;items.push((ol||ul)[1]);continue;}
+  if(/^>\s?/.test(t)){flushP();flushList();out.push("<blockquote>"+inline(t.replace(/^>\s?/,""))+"</blockquote>");continue;}
+  if(listType){items[items.length-1]+=" "+t;}else{p.push(t);}
+ }
+ flush();return out.join("\n");
 }
-function renderCards(){
- const list=cards.filter(c=>c.ch===selected&&(!query||(c.title+c.q+c.a+c.k.join(" ")).toLowerCase().includes(query.toLowerCase()))&&(statusFilter==="all"||state(c.title)===statusFilter));
- $("chapterTitle").textContent="第"+selected+"章 "+chapters[selected-1];
- $("chapterDesc").textContent="本章 "+cards.filter(c=>c.ch===selected).length+" 张冲刺卡 · 建议先独立复述，再核对答案与关键词。";
- $("visibleCount").textContent="显示 "+list.length+" / "+cards.filter(c=>c.ch===selected).length+" 张";
- if(!list.length){$("cards").innerHTML='<div class="empty">'+(cards.some(c=>c.ch===selected)?"没有符合当前搜索或筛选条件的知识卡。":"本章已纳入21章目录，当前冲刺卡优先覆盖高频基础与易混考点。后续可继续按考试分析补充。")+'</div>';return}
- $("cards").innerHTML=list.map(c=>{
-  const s=state(c.title),label=s==="mastered"?"已掌握":s==="review"?"需巩固":"未自评";
-  const aOpen=!closed;
-  const my=progress[c.title]?.draft||"";
-  return '<article class="card" data-title="'+c.title+'"><div class="card-top"><span class="tag">'+(c.priority===1?"优先背诵":"理解巩固")+'</span><span class="state">'+label+'</span></div><h3>'+c.title+'</h3><div class="question">'+c.q+'</div><div class="write"><textarea data-draft="'+c.title+'" placeholder="闭卷写出你的答案（可选，自动保存）">'+esc(my)+'</textarea><small>答题后再展开参考要点，检查遗漏。</small></div><div class="answer '+(aOpen?"open":"")+'" id="ans-'+encodeURIComponent(c.title)+'"><p>'+c.a+'</p><div class="keywords">'+c.k.map(k=>'<span class="keyword">'+k+'</span>').join("")+'</div>'+(c.tip?'<div class="tip">易错提醒：'+c.tip+'</div>':'')+'</div><div class="actions"><button class="show" data-show="'+c.title+'">'+(aOpen?"隐藏参考要点":"显示参考要点")+'</button><button class="done" data-rate="mastered" data-id="'+c.title+'">已掌握</button><button class="review" data-rate="review" data-id="'+c.title+'">需巩固</button></div></article>'
+function activateTab(name){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+name));}
+function jumpTo(id){activateTab("analysis");const el=$(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
+function buildChapterNav(){
+ $("chapterNav").innerHTML=chapterIds.map((c,i)=>'<button class="side-btn" data-jump="'+c.id+'"><small>'+String(i+1).padStart(2,"0")+'</small><span>'+esc(c.title)+'</span></button>').join("");
+ $("chapterNav").querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{const el=$(b.dataset.jump);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});$("chapterNav").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));});
+}
+function chapterRanges(){
+ return chapterIds.map((c,i)=>{const next=chapterIds[i+1],start=headings.findIndex(h=>h.id===c.id),end=next?headings.findIndex(h=>h.id===next.id):headings.length;return {chapter:c,items:headings.slice(start+1,end)};});
+}
+function buildChapterGrid(){
+ $("chapterGrid").innerHTML=chapterRanges().map((r,i)=>{
+  const shown=r.items.filter(h=>h.isSection||h.level<=3).slice(0,18);
+  return '<article class="chapter-card"><h3><span class="pill">第'+(i+1)+'章</span> '+esc(r.chapter.title)+'</h3>'+shown.map(h=>'<button class="subhead" data-chapter-jump="'+h.id+'">'+esc(h.title.replace(/^[-—\s]+|[-—\s]+$/g,""))+'　›</button>').join("")+'<div class="more">本章共 '+(r.items.length+1)+' 个标题层级</div><button class="subhead" data-chapter-jump="'+r.chapter.id+'">查看本章全文　›</button></article>';
  }).join("");
- document.querySelectorAll("[data-show]").forEach(b=>b.onclick=()=>{const el=$("ans-"+encodeURIComponent(b.dataset.show));el.classList.toggle("open");b.textContent=el.classList.contains("open")?"隐藏参考要点":"显示参考要点"});
- document.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{const id=b.dataset.id;progress[id]=progress[id]||{};progress[id].status=b.dataset.rate;save();renderCards();updateStats()});
- document.querySelectorAll("[data-draft]").forEach(t=>t.oninput=()=>{const id=t.dataset.draft;progress[id]=progress[id]||{};progress[id].draft=t.value;save()});
+ $("chapterGrid").querySelectorAll("[data-chapter-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.chapterJump));
 }
-function setMode(isClosed){closed=isClosed;document.body.classList.toggle("closed",closed);$("closedMode").classList.toggle("active",closed);$("allMode").classList.toggle("active",!closed);$("modeBtn").textContent=closed?"切换知识学习模式":"切换闭卷模式";renderCards()}
-$("search").oninput=e=>{query=e.target.value;renderCards()};
-$("filter").onchange=e=>{statusFilter=e.target.value;renderCards()};
-$("allMode").onclick=()=>setMode(false);$("closedMode").onclick=()=>setMode(true);$("modeBtn").onclick=()=>setMode(!closed);
-$("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(progress,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="刑法学学习记录.json";a.click();URL.revokeObjectURL(a.href)};
-renderChapters();renderCards();updateStats();
+function filterTopics(){
+ const q=$("topicSearch").value.trim().toLowerCase();
+ const list=topics.filter(t=>!q||t.title.toLowerCase().includes(q)||t.chapter.toLowerCase().includes(q));
+ $("topicStatus").textContent="显示 "+list.length+" / "+topics.length+" 个考点提示";
+ $("topicGrid").innerHTML=list.length?list.map(t=>'<article class="topic-card"><button data-topic-jump="'+t.id+'">'+esc(t.title)+'</button><small>'+esc(t.chapter)+'</small></article>').join(""):'<div class="empty">没有找到匹配的考点提示，请调整关键词。</div>';
+ $("topicGrid").querySelectorAll("[data-topic-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.topicJump));
+}
+function searchFull(q){
+ const box=$("searchResults");if(!q){box.classList.remove("show");box.innerHTML="";$("searchStatus").textContent="原文已加载";return;}
+ const nodes=[...$("analysisContent").querySelectorAll("[data-search]")].filter(n=>n.dataset.search.includes(q.toLowerCase()));
+ box.classList.add("show");$("searchStatus").textContent="命中 "+nodes.length+" 处";
+ box.innerHTML=nodes.slice(0,50).map((n,i)=>'<button data-result="'+i+'">'+esc((n.textContent||"").slice(0,220))+'</button>').join("")+(nodes.length>50?'<div class="source-note">仅显示前50项，请缩小检索范围。</div>':"");
+ box.querySelectorAll("[data-result]").forEach(b=>b.onclick=()=>{const n=nodes[Number(b.dataset.result)];activateTab("analysis");n.scrollIntoView({behavior:"smooth",block:"center"});n.style.background="#fff6df";setTimeout(()=>n.style.background="",1600);});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
+$("searchInput").oninput=e=>searchFull(e.target.value.trim());$("clearSearch").onclick=()=>{$("searchInput").value="";searchFull("");};
+$("topicSearch").oninput=filterTopics;$("clearTopics").onclick=()=>{$("topicSearch").value="";filterTopics();};
+async function init(){
+ try{
+  const res=await fetch("./exam-analysis.md");if(!res.ok)throw new Error("知识库文件加载失败："+res.status);
+  md=await res.text();$("analysisContent").innerHTML=renderMarkdown(md);
+  const sectionCount=headings.filter(h=>h.isSection).length;
+  $("chapterStat").textContent=chapterIds.length+"章";$("sectionStat").textContent=sectionCount+"节";$("headingStat").textContent=headings.length+"项";$("charStat").textContent=md.length.toLocaleString()+"字";
+  $("sourceStatus").textContent="原文已完整载入";$("searchStatus").textContent="原文已加载";
+  buildChapterNav();buildChapterGrid();filterTopics();
+ }catch(e){$("analysisContent").textContent="加载失败："+e.message+"。请刷新页面或检查同目录考试分析文件。";$("sourceStatus").textContent="加载失败";}
+}
+init();
 </script>
 </body></html>
