@@ -1,0 +1,2 @@
+Render auto-deployment verification.
+This is a harmless trigger file; it does not change website content.
