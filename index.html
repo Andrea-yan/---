@@ -232,6 +232,21 @@ button{cursor:pointer}
 .study-intro{display:block;margin-bottom:6px}
 @media print{.study-item,.study-line,.chapter-card .focus{background:none!important;color:#111!important}}
 
+
+/* 史纲知识卡：事件主线、历史意义、易混考点、背诵要点 */
+.chapter-card .history-trap{border:1px solid #efdfc6;border-left:4px solid #c18a4b;border-radius:0 8px 8px 0;padding:11px 13px!important;background:#fff9ef;color:#6f5034;line-height:1.9}
+.chapter-card .history-trap b{color:#925f2d}
+.detail .overview-note{border-left:4px solid #648ba9;background:#f5f9fc;padding:9px 11px;border-radius:0 7px 7px 0}
+.detail .exam-note{border-left:4px solid #c18b48!important;background:#fff9ef!important;padding:10px 12px;border-radius:0 8px 8px 0}
+.study-reference-points{line-height:1.95!important}
+.study-answer .study-item,.study-answer .study-line{padding:7px 11px;border-left:3px solid #9bb7ca;background:#f7fafc;margin:7px 0}
+.chapter-card ul{padding-left:1.55em;line-height:1.9}
+.chapter-card li{padding:4px 0;break-inside:avoid-page}
+.chapter-card .chapter-meta{color:#4e718f;font-weight:750}
+.q-card h3{line-height:1.65}
+@media(max-width:550px){.chapter-card .history-trap{padding:9px!important}.detail .exam-note{padding:8px}}
+@media print{.chapter-card .history-trap,.detail .overview-note,.detail .exam-note{background:#fff!important;color:#111!important}}
+
 </style>
 </head>
 <body>
@@ -540,10 +555,10 @@ function renderDetail(e){
  $("detail").innerHTML=`
  <div class="detail-head"><button class="detail-mobile-close" id="closeMobileDetail" type="button" aria-label="关闭考点详情">关闭 ×</button><div class="eyebrow">${periodNames[e.p]} · ${e.c} · 第${chapterForEvent(e)}章</div><h2>${quiz?'事件名称已隐藏':e.t}</h2><div class="detail-date">${e.d}</div></div>
  <div class="detail-body">
-  <div class="detail-block"><h4>事件概述</h4><p>${studyParts(e.s)}</p></div>
+  <div class="detail-block overview-note"><h4>事件概述</h4><p>${studyParts(e.s)}</p></div>
   <div class="detail-block"><h4>历史背景</h4><p>${quiz?'（记忆检测模式：先尝试回忆，再关闭检测查看）':studyParts(e.b)}</p></div>
   <div class="detail-block"><h4>主要内容 / 发展过程</h4><p>${quiz?'内容已隐藏。请先口头复述事件的主要经过。':studyParts(e.m)}</p></div>
-  <div class="detail-block exam-note"><h4>考研提示</h4><p>${quiz?'内容已隐藏。请先回忆该事件的历史意义、易混点和常见考查角度。':studyParts(e.e)}</p></div>
+  <div class="detail-block exam-note"><h4>考研重点与辨析</h4><p>${quiz?'内容已隐藏。请先回忆该事件的历史意义、易混点和常见考查角度。':studyParts(e.e)}</p></div>
   <div class="detail-block"><h4>关键词</h4><div class="keywords">${e.k.map(k=>`<span class="keyword">${k}</span>`).join("")}</div></div>
   <div class="detail-block"><h4>历年真题关联（本章）</h4><div class="q-links">${pastQuestions.filter(q=>q.chapter===chapterForEvent(e)).slice(0,8).map(q=>`<button class="q-link" data-qjump="${q.year}-${q.no}">${q.year}年·${q.no}题 ${q.type}</button>`).join("")||'<span class="chapter-count">当前索引暂无本章题目</span>'}</div></div>
   <div class="quiz"><h4>主动回忆</h4><p>不看资料，试着回答：这一事件发生的背景是什么？它改变了什么？与前后哪些事件有关？</p><input id="recall" placeholder="写下你的关键词（仅本次页面临时显示）"><button id="saveRecall">记录我的回忆</button><div class="quiz-result" id="recallResult"></div></div>
@@ -570,7 +585,7 @@ function renderChapters(){
    <div class="section-label">知识点清单</div>
    <ul>${c.topics.map(t=>`<li>${t}</li>`).join("")}</ul>
    <p class="focus"><b>重点：</b>${studyParts(c.focus)}</p>
-   <p><b>易混点：</b>${studyParts(c.trap)}</p>
+   <p class="history-trap"><b>易混点：</b>${studyParts(c.trap)}</p>
    <div class="chapter-actions"><span class="chapter-count">${count}个时间节点 · ${qcount}道真题索引</span><button data-chapter-open="${c.n}">查看本章时间轴</button></div>
   </article>`;
  }).join("");
@@ -670,7 +685,7 @@ function renderStudy(){
    <div class="study-card-head"><span class="chapter-meta">第${c.ch}章 · ${chapters.find(x=>x.n===c.ch).title}</span><span class="study-status">${label}</span></div>
    <h3>${c.title}</h3>
    <div class="study-question">${c.q}</div>
-   <div class="study-answer" id="answer-${c.id}"><p>${studyParts(c.a)}</p><div class="study-keys">${c.k.map(k=>`<span class="keyword">${k}</span>`).join("")}</div></div>
+   <div class="study-answer" id="answer-${c.id}"><p class="study-reference-points">${studyParts(c.a)}</p><div class="study-keys">${c.k.map(k=>`<span class="keyword">${k}</span>`).join("")}</div></div>
    <div class="study-actions">
     <button class="reveal" data-reveal="${c.id}">展开参考提纲</button>
     <button class="mastered" data-rate="mastered" data-id="${c.id}">已掌握</button>
