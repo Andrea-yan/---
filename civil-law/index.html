@@ -20,6 +20,150 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
 .topic-card button,.system-card button{border:0;background:transparent;padding:0;text-align:left;width:100%;color:#334b63;font-size:13px;line-height:1.65}.topic-card button:hover,.system-card button:hover{color:#9a6b2e}.topic-card small,.system-card small{display:flex;gap:6px;align-items:center;color:#99a3af;font-size:10px;margin-top:6px}.pill{display:inline-block;border-radius:5px;padding:4px 7px;background:#eef3f7;color:#50657d;font-size:10px}.source-note{font-size:11px;color:#8793a1;line-height:1.7;padding:12px 2px}.empty{grid-column:1/-1;padding:20px;color:#8491a0;text-align:center;background:white;border:1px solid var(--line);border-radius:9px}
 @media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{position:static}.side-list{max-height:260px}.stats{grid-template-columns:repeat(2,1fr)}.chapter-grid,.topic-grid,.system-grid{grid-template-columns:1fr}}
 @media(max-width:520px){header{padding:17px 14px}.wrap{padding:9px}.stats{gap:6px}.stat{padding:9px}.stat b{font-size:17px}.tools{padding:8px}.tools input{min-width:100%;width:100%}.content-body{padding:12px}.doc p,.doc li{font-size:13px}.content-head{padding:12px}.content-head h2{font-size:16px}}
+
+
+/* ===== 阅读体验统一优化 v1：刑法学 / 民法学 ===== */
+:root{
+ --navy:#173451;--navy2:#315776;--ink:#26364a;--muted:#718093;
+ --paper:#f3f6f9;--line:#dce3eb;--gold:#c48a36;
+ --soft-blue:#f2f6fa;--soft-gold:#fff7eb;
+}
+html{scroll-padding-top:18px}
+body{font-size:15px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+header{padding-top:25px;padding-bottom:27px}
+.wrap{max-width:1500px;padding:20px}
+.stats{gap:12px}
+.stat{padding:13px 16px;border-radius:12px;box-shadow:0 2px 8px rgba(24,48,72,.025)}
+.stat b{font-size:21px;letter-spacing:.01em}
+.tabs{gap:8px;padding:8px;border-radius:12px;box-shadow:0 2px 8px rgba(24,48,72,.025)}
+.tab{padding:10px 15px;font-size:13px;transition:background .16s ease,color .16s ease}
+.tools{padding:12px;border-radius:12px}
+.tools input{min-height:40px;font-size:14px}
+.tools button,.tools select{min-height:38px}
+.layout{grid-template-columns:250px minmax(0,1fr);gap:15px}
+.sidebar,.content{border-radius:13px;box-shadow:0 3px 12px rgba(24,48,72,.035)}
+.sidebar{top:14px}
+.side-title{padding:15px 16px;font-size:13px;background:#fbfcfd}
+.side-list{padding:9px;max-height:calc(100vh - 190px)}
+.side-btn{padding:10px 11px;font-size:13px;line-height:1.6;border-radius:8px}
+.side-btn small{min-width:27px;padding-top:2px}
+.content-head{padding:17px 21px}
+.content-head h2{font-size:19px;letter-spacing:.01em}
+.content-head p{font-size:13px;line-height:1.7}
+.content-body{padding:26px clamp(22px,3.4vw,48px) 34px}
+.doc{max-width:960px;margin:0 auto}
+.doc h1,.doc h2,.doc h3,.doc h4,.doc h5,.doc h6{
+ color:var(--navy);line-height:1.55;scroll-margin-top:18px;letter-spacing:.005em
+}
+.doc h1,.doc h2{
+ font-size:19px;font-weight:700;border-bottom:1px solid #e5ebf1;
+ padding-bottom:10px;margin:30px 0 15px
+}
+.doc h2.chapter-heading,.doc h1.chapter-heading{
+ font-size:23px;font-weight:750;line-height:1.5;
+ margin:39px 0 23px;padding:15px 18px;
+ border:1px solid #dce5ee;border-left:5px solid var(--navy2);
+ border-radius:0 10px 10px 0;
+ background:linear-gradient(90deg,#f0f5f9 0%,#fbfcfd 72%,#fff 100%);
+ box-shadow:0 2px 7px rgba(23,52,81,.035)
+}
+.doc h3{
+ font-size:18px;font-weight:700;margin:26px 0 12px;
+ padding-left:11px;border-left:3px solid #9aafc2
+}
+.doc h4{
+ font-size:16px;font-weight:700;margin:22px 0 11px;
+ padding:9px 13px;background:#f3f6f9;
+ border-left:3px solid #a9bac9;border-radius:0 8px 8px 0
+}
+.doc h5,.doc h6{
+ font-size:15px;font-weight:700;margin:19px 0 9px;
+ color:#38536e
+}
+.doc p{
+ font-size:15px;line-height:2;margin:10px 0 14px;
+ color:#34465a;letter-spacing:.01em
+}
+.doc p strong,.doc li strong{color:#173d61;font-weight:700}
+.doc ol,.doc ul{padding-left:29px;margin:11px 0 17px}
+.doc li{font-size:15px;line-height:1.95;padding-left:4px;margin:6px 0;color:#34465a}
+.doc li::marker{color:#7890a7}
+.doc .analysis{
+ background:#f3f7fb;border-left:4px solid #8da7bd;
+ padding:13px 16px;margin:14px 0 17px;border-radius:0 9px 9px 0
+}
+.doc .source-topic{color:#8a632e;background:#fff8ed;border-radius:6px;padding:2px 5px}
+.doc .chapter-heading{scroll-margin-top:18px}
+.doc blockquote{
+ margin:14px 0;padding:13px 17px;border-left:4px solid #c4a16d;
+ background:#fff9f0;color:#65533c;border-radius:0 9px 9px 0;line-height:1.9
+}
+.doc .math{font-family:Georgia,"Times New Roman",serif;color:#314d68}
+.result-box{box-shadow:0 3px 12px rgba(24,48,72,.035)}
+.result-box button{font-size:13px;padding:10px}
+.chapter-grid,.topic-grid{gap:12px}
+.chapter-card,.topic-card{
+ border-radius:12px;padding:15px 16px;
+ box-shadow:0 2px 8px rgba(24,48,72,.025);
+ transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease
+}
+.chapter-card:hover,.topic-card:hover{
+ border-color:#b9c9d8;box-shadow:0 5px 15px rgba(24,48,72,.06);transform:translateY(-1px)
+}
+.chapter-card h3{font-size:15px;line-height:1.65}
+.chapter-card .subhead{font-size:13px;line-height:1.65;padding:7px 9px}
+.topic-card button{font-size:14px;line-height:1.75}
+.topic-card small{font-size:11px;margin-top:8px}
+.pill{font-size:11px;padding:4px 8px}
+.source-note{font-size:12px;line-height:1.8}
+button:focus-visible,input:focus-visible,select:focus-visible{
+ outline:3px solid rgba(68,119,160,.28);outline-offset:2px
+}
+@media(max-width:850px){
+ .wrap{padding:14px}
+ .layout{grid-template-columns:1fr}
+ .sidebar{top:auto}
+ .side-list{max-height:230px}
+ .content-body{padding:22px clamp(16px,4vw,30px) 28px}
+ .doc{max-width:none}
+}
+@media(max-width:520px){
+ header{padding:18px 15px 20px}
+ .wrap{padding:10px}
+ .stats{gap:7px}
+ .stat{padding:10px 11px}
+ .stat b{font-size:18px}
+ .stat span{font-size:11px}
+ .tabs{padding:6px;gap:5px}
+ .tab{padding:9px 10px;font-size:12px}
+ .tools{padding:9px}
+ .tools input{min-width:100%;width:100%;font-size:14px}
+ .content-head{padding:13px 14px}
+ .content-head h2{font-size:17px}
+ .content-body{padding:17px 15px 24px}
+ .doc h2.chapter-heading,.doc h1.chapter-heading{font-size:20px;padding:12px 13px;margin:30px 0 18px}
+ .doc h1,.doc h2{font-size:18px;margin:25px 0 12px}
+ .doc h3{font-size:17px;margin:22px 0 10px}
+ .doc h4{font-size:15px}
+ .doc p,.doc li{font-size:14.5px;line-height:1.95}
+ .doc ol,.doc ul{padding-left:24px}
+ .chapter-grid,.topic-grid{grid-template-columns:1fr}
+}
+@media print{
+ body{background:#fff;color:#111}
+ header,.stats,.tabs,.tools,.sidebar,.content-head,.source-note{display:none!important}
+ .wrap{max-width:none;padding:0}
+ .panel{display:block!important}
+ .layout{display:block}
+ .content{border:0;box-shadow:none}
+ .content-body{padding:0}
+ .doc{max-width:none}
+ .doc h2.chapter-heading,.doc h1.chapter-heading{break-after:avoid}
+ .doc h2,.doc h3,.doc h4,.doc h5{break-after:avoid}
+ .doc p,.doc li{orphans:3;widows:3}
+ .doc blockquote,.doc .analysis{break-inside:avoid}
+}
+
 </style>
 </head>
 <body>
