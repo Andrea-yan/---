@@ -254,7 +254,7 @@ const comparisonSets=[
 ];
 function findCompareSource(term){
  if(!term)return null;
- const clean=s=>s.toLowerCase().replace(/[▶《》“”‘’"'\\s:：，,。；;（）()]/g,"");
+ const clean=s=>s.toLowerCase().replace(/[▶《》“”‘’"'\s:：，,。；;（）()]/g,"");
  let h=headings.find(x=>clean(x.title).includes(clean(term)));
  if(h)return h.id;
  const nodes=[...document.querySelectorAll("#analysisContent [data-search]")];
