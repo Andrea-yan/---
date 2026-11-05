@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#173451">
+<title>中国法制史完整学习系统｜法硕专业课</title>
+<style>
+:root{--navy:#173451;--navy2:#315776;--ink:#26364a;--muted:#718093;--paper:#f3f6f9;--line:#dce3eb;--gold:#c48a36;--green:#34745a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif}button,input,select{font:inherit}button{cursor:pointer}
+header{background:linear-gradient(115deg,#142b43,#315776);color:#fff;padding:22px max(18px,calc((100vw - 1440px)/2))}.head{max-width:1440px;margin:auto}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:#d9e5ef;font-size:12px}.head-actions{display:flex;gap:8px;flex-wrap:wrap}.head-actions a{border:1px solid #7891a8;background:#ffffff12;color:white;padding:8px 11px;border-radius:8px;font-size:12px;text-decoration:none}
+h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d5e0ea;line-height:1.75;margin:0;max-width:1100px}
+.wrap{max-width:1440px;margin:auto;padding:18px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.stat{background:white;border:1px solid var(--line);border-radius:11px;padding:11px 14px}.stat b{display:block;font-size:20px;color:var(--navy)}.stat span{font-size:11px;color:var(--muted)}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;background:white;border:1px solid var(--line);padding:8px;border-radius:11px;margin-bottom:12px}.tab{border:1px solid transparent;background:transparent;color:#536174;border-radius:8px;padding:9px 13px;font-size:13px}.tab.active{background:var(--navy);color:white}.panel{display:none}.panel.active{display:block}
+.tools{display:flex;gap:8px;flex-wrap:wrap;background:white;border:1px solid var(--line);padding:11px;border-radius:11px;margin-bottom:12px}.tools input{flex:1;min-width:220px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;outline:none}.tools button,.tools select{border:1px solid var(--line);background:white;color:var(--ink);border-radius:8px;padding:8px 10px;font-size:12px}
+.layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:13px;align-items:start}.sidebar,.content{background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden}.sidebar{position:sticky;top:10px}.side-title{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--navy)}.side-list{padding:7px;max-height:calc(100vh - 180px);overflow:auto}
+.side-btn{width:100%;display:flex;gap:8px;align-items:flex-start;text-align:left;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#536174;font-size:12px;line-height:1.5}.side-btn:hover{background:#f4f7fa}.side-btn.active{background:#eaf0f6;color:var(--navy);font-weight:700}.side-btn small{color:#98a3b0;min-width:25px;font-size:10px}
+.content-head{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.content-head h2{font-size:18px;color:var(--navy);margin:0 0 4px}.content-head p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}.content-body{padding:17px 20px}
+.doc h1,.doc h2,.doc h3,.doc h4,.doc h5,.doc h6{color:var(--navy);line-height:1.5;scroll-margin-top:14px}.doc h1,.doc h2{font-size:20px;border-bottom:1px solid #e8edf2;padding-bottom:8px;margin:25px 0 13px}.doc h3{font-size:17px;margin:21px 0 10px}.doc h4{font-size:16px;margin:20px 0 9px;padding:8px 11px;background:#f4f7fa;border-left:3px solid #7891a8;border-radius:0 7px 7px 0}.doc h5,.doc h6{font-size:14px;margin:16px 0 8px}.doc p{font-size:14px;line-height:1.95;margin:7px 0 12px;color:#3c4c5e}.doc ol,.doc ul{padding-left:27px;margin:8px 0 14px}.doc li{font-size:14px;line-height:1.9;padding-left:3px;margin:4px 0}.doc strong{color:#243d56}.doc .chapter-heading{margin-top:34px;padding-top:12px;border-top:2px solid #e5ebf1}.doc .analysis{background:#f8fafc;border-left:3px solid #b7c6d4;padding:10px 13px;border-radius:0 7px 7px 0}
+.result-box{display:none;background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:12px;padding:9px}.result-box.show{display:block}.result-box button{display:block;width:100%;text-align:left;border:0;border-radius:7px;background:transparent;padding:8px;color:#42566d;font-size:12px;line-height:1.6}.result-box button:hover{background:#f2f5f8}
+.timeline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.era-card{background:white;border:1px solid var(--line);border-radius:11px;overflow:hidden}.era-head{padding:13px 15px;background:#f8fafc;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:10px}.era-no{background:#e7edf3;color:var(--navy);border-radius:7px;padding:5px 8px;font-size:11px;font-weight:700}.era-head h3{margin:0;color:var(--navy);font-size:14px;line-height:1.6}.era-body{padding:9px 12px}.era-item{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:7px;padding:8px 9px;color:#506176;font-size:12px;line-height:1.6}.era-item:hover{background:#f2f5f8;color:var(--navy)}.era-empty{color:#8b97a5;font-size:12px;padding:8px}
+.topic-grid,.system-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.topic-card,.system-card{background:white;border:1px solid var(--line);border-radius:9px;padding:11px 13px}.topic-card button,.system-card button{border:0;background:transparent;padding:0;text-align:left;width:100%;color:#334b63;font-size:13px;line-height:1.65}.topic-card button:hover,.system-card button:hover{color:#9a6b2e}.topic-card small,.system-card small{display:flex;gap:6px;align-items:center;color:#99a3af;font-size:10px;margin-top:6px}.pill{display:inline-block;border-radius:5px;padding:4px 7px;background:#eef3f7;color:#50657d;font-size:10px}.source-note{font-size:11px;color:#8793a1;line-height:1.7;padding:12px 2px}.empty{grid-column:1/-1;padding:20px;color:#8491a0;text-align:center;background:white;border:1px solid var(--line);border-radius:9px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{position:static}.side-list{max-height:250px}.stats{grid-template-columns:repeat(2,1fr)}.timeline,.topic-grid,.system-grid{grid-template-columns:1fr}}
+@media(max-width:520px){header{padding:17px 14px}.wrap{padding:9px}.stats{gap:6px}.stat{padding:9px}.stat b{font-size:17px}.tools{padding:8px}.tools input{min-width:100%;width:100%}.content-body{padding:12px}.doc p,.doc li{font-size:13px}.content-head{padding:12px}.content-head h2{font-size:16px}}
+</style>
+</head>
+<body>
+<header><div class="head">
+ <div class="topline"><span>法硕（非法学） · 中国法制史完整学习系统 1.0</span><div class="head-actions"><a href="/constitution/">宪法学</a><a href="/jurisprudence/">法理学</a><a href="/criminal-law/">刑法学</a><a href="/">返回学习主页</a></div></div>
+ <h1>中国法制史 · 历代制度沿革与考点索引</h1>
+ <p class="sub">以《2026版考试分析·中国法制史》原文为主线。按历史时期建立时间轴，同时保留完整教材文本、历代法典与制度索引、考点提示速查，帮助把立法、刑事、民事、行政与司法制度放回各自的历史阶段。</p>
+</div></header>
+<main class="wrap">
+ <section class="stats">
+  <div class="stat"><b id="chapterStat">读取中</b><span>教材章节</span></div>
+  <div class="stat"><b id="headingStat">读取中</b><span>标题层级</span></div>
+  <div class="stat"><b id="topicStat">读取中</b><span>考点提示</span></div>
+  <div class="stat"><b id="lineStat">读取中</b><span>原文行数</span></div>
+ </section>
+ <nav class="tabs">
+  <button class="tab active" data-tab="analysis">考试分析全文</button>
+  <button class="tab" data-tab="timeline">朝代时间轴</button>
+  <button class="tab" data-tab="topics">考点提示速查</button>
+  <button class="tab" data-tab="systems">法典与制度索引</button>
+ </nav>
+ <section class="panel active" id="panel-analysis">
+  <div class="tools"><input id="searchInput" type="search" placeholder="检索朝代、法典、法律制度、司法机构或原文"><button id="clearSearch">清除检索</button><span class="pill" id="searchStatus">原文加载中</span></div>
+  <div class="result-box" id="searchResults"></div>
+  <div class="layout">
+   <aside class="sidebar"><div class="side-title">中国法制史 · 七章目录</div><nav class="side-list" id="chapterNav"></nav></aside>
+   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·中国法制史》</h2><p>保留原文件的章节、考点和分析内容；可通过左侧目录定位。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
+  </div>
+ </section>
+ <section class="panel" id="panel-timeline">
+  <div class="content-head" style="background:white;border:1px solid var(--line);border-radius:10px;margin-bottom:12px"><div><h2>中国法律制度的历史沿革</h2><p>按考试分析的七章顺序组织；点击各历史时期或分节可直接定位原文。</p></div><span class="pill">由教材目录生成</span></div>
+  <div class="timeline" id="timelineGrid"></div>
+ </section>
+ <section class="panel" id="panel-topics">
+  <div class="tools"><input id="topicSearch" type="search" placeholder="搜索考点提示，例如《法经》、五听、准五服以制罪"><select id="topicChapter"><option value="">全部章节</option></select><button id="clearTopics">清除检索</button><span class="pill" id="topicStatus">考点提示索引</span></div>
+  <div class="topic-grid" id="topicGrid"></div>
+ </section>
+ <section class="panel" id="panel-systems">
+  <div class="tools"><input id="systemSearch" type="search" placeholder="搜索法典、刑罚、婚姻继承、司法审判等制度"><select id="systemCategory"><option value="">全部专题</option><option>立法与法典</option><option>刑事制度</option><option>民事制度</option><option>行政与经济制度</option><option>司法制度</option></select><button id="clearSystems">清除检索</button><span class="pill" id="systemStatus">专题索引</span></div>
+  <div class="system-grid" id="systemGrid"></div>
+  <p class="source-note">本索引根据教材标题提取相关法典和制度主题，仅用于跨朝代定位。制度的具体含义、内容和历史评价，以对应章节原文为准。</p>
+ </section>
+ <p class="source-note">资料来源：用户上传的《2026版考试分析·中国法制史》Markdown 文件。正文按原文导入；章节时间轴、考点提示和法典制度索引由原文标题与考点提示生成，不将概括性摘要冒充考试分析原文。</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let md="",headings=[],topics=[],chapters=[],chapterIds=[],systems=[];
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
+function renderMarkdown(text){
+ const lines=text.replace(/\r/g,"").split("\n"),out=[];let p=[],listType="",items=[],hIndex=0,topicIndex=0,currentChapter="";
+ const flushP=()=>{if(p.length){const t=p.join(" ").trim(),cls=t.startsWith("【分析】")?"analysis":"";out.push('<p class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</p>');p=[];}};
+ const flushList=()=>{if(items.length){out.push("<"+listType+">"+items.map(x=>"<li>"+inline(x)+"</li>").join("")+"</"+listType+">");items=[];listType="";}};
+ const flush=()=>{flushP();flushList();};
+ for(let i=0;i<lines.length;i++){
+  const t=lines[i].trim();if(!t){flush();continue;}
+  const h=t.match(/^(#{1,6})\s*(.+)$/);
+  if(h){
+   flush();const level=h[1].length,title=h[2].trim().replace(/\s+#+$/,""),id="history-heading-"+(hIndex++);
+   const cm=title.match(/(第[一二三四五六七八九十百]+章\s*.+)/),isChapter=level<=3&&!!cm;
+   if(isChapter){currentChapter=cm[1].trim();chapterIds.push({title:currentChapter,id});}
+   const rec={title,id,level,chapter:currentChapter,isChapter};headings.push(rec);
+   if(/^▶\s*/.test(title)){topics.push({title:title.replace(/^▶\s*/,"").trim(),id,chapter:currentChapter});}
+   out.push('<h'+level+' id="'+id+'" class="'+(isChapter?"chapter-heading":"")+'" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h'+level+'>');continue;
+  }
+  if(/^▶\s*/.test(t)){
+   flush();const title=t.replace(/^▶\s*/,"").trim(),id="history-topic-"+(topicIndex++);
+   topics.push({title,id,chapter:currentChapter});
+   out.push('<div class="prompt" id="'+id+'" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</div>');continue;
+  }
+  const ol=t.match(/^\d+[.、]\s*(.+)$/),ul=t.match(/^[-*]\s+(.+)$/);
+  if(ol||ul){flushP();const typ=ol?"ol":"ul";if(listType&&listType!==typ)flushList();listType=typ;items.push((ol||ul)[1]);continue;}
+  if(/^>\s?/.test(t)){flushP();flushList();out.push("<blockquote>"+inline(t.replace(/^>\s?/,""))+"</blockquote>");continue;}
+  if(listType){items[items.length-1]+=" "+t;}else{p.push(t);}
+ }
+ flush();return out.join("\n");
+}
+function activateTab(name){
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
+ document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+name));
+}
+function buildChapterNav(){
+ $("chapterNav").innerHTML=chapterIds.map((c,i)=>'<button class="side-btn" data-jump="'+c.id+'"><small>'+String(i+1).padStart(2,"0")+'</small><span>'+esc(c.title)+'</span></button>').join("");
+ $("chapterNav").querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{const el=$(b.dataset.jump);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});$("chapterNav").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));});
+}
+function jumpTo(id){activateTab("analysis");const el=$(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
+function buildTimeline(){
+ $("timelineGrid").innerHTML=chapterIds.map((c,i)=>{
+  const sections=headings.filter(h=>h.chapter===c.title&&h.level===4);
+  return '<article class="era-card"><div class="era-head"><span class="era-no">第'+(i+1)+'章</span><h3>'+esc(c.title)+'</h3></div><div class="era-body">'+(sections.length?sections.map(s=>'<button class="era-item" data-era-jump="'+s.id+'">'+esc(s.title.replace(/^[-—\s]+|[-—\s]+$/g,""))+'　›</button>').join(""):'<div class="era-empty">学科导论与基础知识</div>')+'<button class="era-item" data-era-jump="'+c.id+'">查看本章完整内容　›</button></div></article>';
+ }).join("");
+ $("timelineGrid").querySelectorAll("[data-era-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.eraJump));
+}
+function buildTopicChapterFilter(){
+ $("topicChapter").innerHTML='<option value="">全部章节</option>'+chapterIds.map(c=>'<option value="'+esc(c.title)+'">'+esc(c.title)+'</option>').join("");
+}
+function filterTopics(){
+ const q=$("topicSearch").value.trim().toLowerCase(),ch=$("topicChapter").value;
+ const list=topics.filter(t=>(!q||t.title.toLowerCase().includes(q))&&(!ch||t.chapter===ch));
+ $("topicStatus").textContent="显示 "+list.length+" / "+topics.length+" 个考点";
+ $("topicGrid").innerHTML=list.length?list.map(t=>'<article class="topic-card"><button data-topic-jump="'+t.id+'">'+esc(t.title)+'</button><small>'+esc(t.chapter||"绪论")+'</small></article>').join(""):'<div class="empty">没有找到匹配的考点，请调整关键词或章节。</div>';
+ $("topicGrid").querySelectorAll("[data-topic-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.topicJump));
+}
+function systemCategory(title){
+ if(/司法|审判|诉讼|狱|监察|法院|法官|登闻鼓|复奏|会审|鞫谳|翻异|秋审/.test(title))return "司法制度";
+ if(/婚姻|继承|契约|所有权|债权|民事|民商/.test(title))return "民事制度";
+ if(/刑|罪|五刑|刑罚|量刑|连坐|充军|刺字|死刑/.test(title))return "刑事制度";
+ if(/行政|经济|官吏|科举|赋役|土地|贸易|专卖|监察/.test(title))return "行政与经济制度";
+ if(/《|律|令|格|式|法典|编敕|编例|条法|则例|会典|刑统|法经|刑书/.test(title))return "立法与法典";
+ return "";
+}
+function buildSystems(){
+ const seen=new Set();
+ systems=headings.filter(h=>{
+  if(h.level<4)return false;
+  const t=h.title.replace(/^▶\s*/,"").trim(),cat=systemCategory(t);
+  if(!cat||seen.has(h.id))return false;seen.add(h.id);h.category=cat;return true;
+ });
+ filterSystems();
+}
+function filterSystems(){
+ const q=$("systemSearch").value.trim().toLowerCase(),cat=$("systemCategory").value;
+ const list=systems.filter(s=>(!q||s.title.toLowerCase().includes(q))&&(!cat||s.category===cat));
+ $("systemStatus").textContent="显示 "+list.length+" / "+systems.length+" 个制度索引";
+ $("systemGrid").innerHTML=list.length?list.map(s=>'<article class="system-card"><button data-system-jump="'+s.id+'">'+esc(s.title.replace(/^▶\s*/,""))+'</button><small><span class="pill">'+esc(s.category)+'</span>'+esc(s.chapter||"")+'</small></article>').join(""):'<div class="empty">没有找到匹配的制度主题，请调整筛选条件。</div>';
+ $("systemGrid").querySelectorAll("[data-system-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.systemJump));
+}
+function searchFull(q){
+ const box=$("searchResults");if(!q){box.classList.remove("show");box.innerHTML="";$("searchStatus").textContent="原文已加载";return;}
+ const nodes=[...$("analysisContent").querySelectorAll("[data-search]")].filter(n=>n.dataset.search.includes(q.toLowerCase()));
+ box.classList.add("show");$("searchStatus").textContent="命中 "+nodes.length+" 处";
+ box.innerHTML=nodes.slice(0,40).map((n,i)=>'<button data-result="'+i+'">'+esc((n.textContent||"").slice(0,200))+'</button>').join("")+(nodes.length>40?'<div class="source-note">仅显示前40项，请缩小检索范围。</div>':"");
+ box.querySelectorAll("[data-result]").forEach(b=>b.onclick=()=>{const n=nodes[Number(b.dataset.result)];n.scrollIntoView({behavior:"smooth",block:"center"});n.style.background="#fff6df";setTimeout(()=>n.style.background="",1600);});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
+$("searchInput").oninput=e=>searchFull(e.target.value.trim());$("clearSearch").onclick=()=>{$("searchInput").value="";searchFull("");};
+$("topicSearch").oninput=filterTopics;$("topicChapter").onchange=filterTopics;$("clearTopics").onclick=()=>{$("topicSearch").value="";$("topicChapter").value="";filterTopics();};
+$("systemSearch").oninput=filterSystems;$("systemCategory").onchange=filterSystems;$("clearSystems").onclick=()=>{$("systemSearch").value="";$("systemCategory").value="";filterSystems();};
+async function init(){
+ try{
+  const res=await fetch("./exam-analysis.md");if(!res.ok)throw new Error("知识库文件加载失败："+res.status);
+  md=await res.text();$("analysisContent").innerHTML=renderMarkdown(md);
+  chapters=chapterIds.map(x=>x.title);
+  $("chapterStat").textContent=chapters.length+"章";$("headingStat").textContent=headings.length+"项";$("topicStat").textContent=topics.length+"项";$("lineStat").textContent=md.split(/\r?\n/).length+"行";
+  $("sourceStatus").textContent="原文已加载";$("searchStatus").textContent="原文已加载";
+  buildChapterNav();buildTimeline();buildTopicChapterFilter();filterTopics();buildSystems();
+ }catch(e){$("analysisContent").textContent="加载失败："+e.message+"。请刷新页面或检查同目录考试分析文件。";$("sourceStatus").textContent="加载失败";}
+}
+init();
+</script>
+</body></html>
