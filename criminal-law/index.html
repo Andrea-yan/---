@@ -272,6 +272,20 @@ button:focus-visible,input:focus-visible,select:focus-visible{
 @media(max-width:550px){.doc .crime-card-head{padding:10px 12px}.doc .crime-card-title{font-size:16px!important}.doc .crime-card-content{padding:7px 11px}.crime-quickbar select{min-width:100%}}
 @media print{.doc .crime-card{box-shadow:none;border-color:#aaa}.doc .crime-card-head,.doc .crime-definition,.doc .crime-distinction,.doc .crime-recognition{background:none!important}.doc .crime-card-title{color:#111!important}.doc .crime-card-head{break-after:avoid-page}.doc .crime-syllabus,.crime-quickbar{display:none!important}}
 
+
+/* 教材专注阅读：窄屏加大正文区，完整章节跳转 */
+.study-reader-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #e0e8f0;background:#f7fafc;padding:10px 12px}
+.study-reader-tools label{font-size:12px;font-weight:800;color:#315d80}
+.study-reader-tools select{flex:1;min-width:150px;max-width:100%;border:1px solid #c5d4e2;border-radius:7px;padding:8px;color:#245070;background:#fff;font-size:12px}
+.study-reader-tools button{border:1px solid #c0d1df;border-radius:7px;background:#fff;color:#315e80;padding:8px 10px;font-size:12px;font-weight:750}
+.study-reader-tools button[aria-pressed="true"]{background:#e4f0f8;border-color:#719ebc}
+.layout.focus-reading{display:block!important}
+.layout.focus-reading>.sidebar,.layout.focus-reading>aside{display:none!important}
+.layout.focus-reading>.content,.layout.focus-reading>section{width:100%!important;max-width:100%!important;min-width:0!important}
+.layout.focus-reading .doc{max-width:880px;margin-left:auto!important;margin-right:auto!important}
+@media(max-width:640px){.study-reader-tools{padding:9px;gap:6px}.study-reader-tools label{display:none}.study-reader-tools select{width:100%;min-width:100%;flex-basis:100%}.study-reader-tools button{flex:1}.doc{overflow-wrap:anywhere;word-break:normal}}
+@media print{.study-reader-tools{display:none!important}.layout.focus-reading .doc{max-width:none!important}}
+
 </style>
 </head>
 <body>
@@ -297,7 +311,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{
   <div class="result-box" id="searchResults"></div>
   <div class="layout">
    <aside class="sidebar"><div class="side-title">刑法学 · 二十一章目录</div><nav class="side-list" id="chapterNav"></nav></aside>
-   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·刑法学》</h2><p>总则与分则完整原文。点击左侧章节或使用全文检索定位知识点。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="crime-quickbar" id="crimeQuickbar" style="display:none"><label for="crimeJumpSelect">刑法分则 · 具体罪名速查</label><select id="crimeJumpSelect"><option value="">选择罪名以定位正文</option></select><small id="crimeJumpCount"></small></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
+   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·刑法学》</h2><p>总则与分则完整原文。点击左侧章节或使用全文检索定位知识点。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="crime-quickbar" id="crimeQuickbar" style="display:none"><label for="crimeJumpSelect">刑法分则 · 具体罪名速查</label><select id="crimeJumpSelect"><option value="">选择罪名以定位正文</option></select><small id="crimeJumpCount"></small></div><div class="study-reader-tools"><label for="readerChapterSelect">章节速览</label><select id="readerChapterSelect" aria-label="选择教材章节"><option value="">跳转到某一章</option></select><button type="button" id="readerFocusToggle" aria-pressed="false">专注阅读</button><button type="button" id="readerBackTop">回到本章顶部</button></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
   </div>
  </section>
  <section class="panel" id="panel-chapters">
@@ -361,6 +375,14 @@ function joinStudyLines(parts){
   if(!out)return line;
   return out+(/[\u3400-\u9fff]$/.test(out)&&/^[\u3400-\u9fff]/.test(line)?"":" ")+line;
  },"");
+}
+function initReaderTools(){
+ const select=$("readerChapterSelect"),focus=$("readerFocusToggle"),back=$("readerBackTop"),doc=$("analysisContent");
+ const chapters=chapterIds;
+ select.innerHTML='<option value="">跳转到某一章</option>'+chapters.map(c=>'<option value="'+c.id+'">'+esc(c.title)+'</option>').join("");
+ select.onchange=()=>{if(!select.value)return;const el=$(select.value);if(el){el.scrollIntoView({behavior:"smooth",block:"start"});back.dataset.currentChapter=select.value;}};
+ focus.onclick=()=>{const layout=doc.closest(".layout"),enabled=layout.classList.toggle("focus-reading");focus.setAttribute("aria-pressed",String(enabled));focus.textContent=enabled?"退出专注阅读":"专注阅读";};
+ back.onclick=()=>{const id=back.dataset.currentChapter||select.value;const el=id?$(id):null;(el||doc).scrollIntoView({behavior:"smooth",block:"start"});};
 }
 function renderMarkdown(text){
  const lines=repairBrokenSource(text).split("\n"),out=[];
@@ -523,7 +545,7 @@ function buildCrimePicker(){
 async function init(){
  try{
   const res=await fetch("./exam-analysis.md");if(!res.ok)throw new Error("知识库文件加载失败："+res.status);
-  md=await res.text();$("analysisContent").innerHTML=renderMarkdown(md);buildCrimePicker();
+  md=await res.text();$("analysisContent").innerHTML=renderMarkdown(md);initReaderTools();buildCrimePicker();
   const sectionCount=headings.filter(h=>h.isSection).length;
   $("chapterStat").textContent=chapterIds.length+"章";$("sectionStat").textContent=sectionCount+"节";$("headingStat").textContent=headings.length+"项";$("charStat").textContent=md.length.toLocaleString()+"字";
   $("sourceStatus").textContent="原文已完整载入";$("searchStatus").textContent="原文已加载";
