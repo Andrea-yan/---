@@ -63,6 +63,48 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
 .doc ol li::marker{color:#315f86;font-weight:800}
 @media(max-width:520px){.doc .doc-subheading{font-size:16px;margin:18px 0 9px;padding:8px 11px}}
 
+
+/* A4打印：仅输出考试分析原文，不输出搜索和索引页面 */
+@page{size:A4;margin:18mm 16mm}
+@media print{
+ html,body{background:#fff!important;color:#111!important;font-family:"SimSun","Songti SC",serif!important;font-size:11pt!important}
+ header,.stats,.tabs,.tools,.sidebar,.content-head,.source-note,.search-results,.result-box,.print-source-btn{display:none!important}
+ .wrap,main{max-width:none!important;width:100%!important;margin:0!important;padding:0!important}
+ .panel,.panel.active{display:none!important}
+ #panel-analysis{display:block!important}
+ .layout,.content,.content-body,.doc{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important}
+ .doc{font-size:11pt!important;line-height:1.7!important}
+ .doc p,.doc li{font-size:11pt!important;line-height:1.7!important;orphans:3;widows:3}
+ .doc h1,.doc h2,.doc h3,.doc h4,.doc h5,.doc h6{color:#111!important;break-after:avoid-page;page-break-after:avoid;font-family:"SimHei","Heiti SC",sans-serif!important}
+ .doc h1.chapter-heading,.doc h2.chapter-heading{break-before:page;page-break-before:always}
+ .doc h1.chapter-heading:first-child,.doc h2.chapter-heading:first-child{break-before:auto;page-break-before:auto}
+ .doc .doc-subheading{background:none!important;border-left:2px solid #666!important;color:#111!important;padding:2px 8px!important;font-size:11pt!important}
+ .doc .answer-key{background:none!important;color:#111!important;text-decoration:none!important;font-weight:700!important}
+ .doc ol,.doc ul{padding-left:2em!important}
+ .doc li{break-inside:avoid-page}
+ .doc blockquote{break-inside:avoid-page}
+ .print-source-btn{display:none!important}
+}
+.print-source-btn{margin-left:auto;border:1px solid #cbd6e2;background:#fff;color:#315776;border-radius:8px;padding:9px 13px;font-size:12px;font-weight:700;cursor:pointer}
+.print-source-btn:hover{background:#f0f5f9}
+@media(max-width:520px){.print-source-btn{margin:5px 0 0;width:100%}}
+
+
+.compare-view-switch{display:flex;gap:12px;align-items:center;margin:0 0 10px;flex-wrap:wrap}
+.compare-view-switch button{border:1px solid #b9c9d8;background:#eaf1f7;color:#234969;font-weight:700;border-radius:8px;padding:8px 12px;cursor:pointer}
+.compare-view-switch span{font-size:12px;color:#718093}
+.compare-table-scroll{overflow-x:auto;border:1px solid #dce3eb;border-radius:10px;background:#fff}
+.compare-table{border-collapse:collapse;width:100%;min-width:920px;font-size:12px;line-height:1.75}
+.compare-table th{background:#e9f0f7;color:#173451;text-align:left;font-weight:800;position:sticky;top:0}
+.compare-table td,.compare-table th{padding:10px 12px;border-bottom:1px solid #e2e8ef;vertical-align:top}
+.compare-table td:nth-child(1){min-width:130px;font-weight:700;color:#315776}
+.compare-table td:nth-child(2){min-width:88px;white-space:nowrap}
+.compare-table td:nth-child(3){min-width:150px;font-weight:700}
+.compare-table td:nth-child(4){min-width:255px}
+.compare-table td:nth-child(5){min-width:255px;color:#765a31}
+.compare-table tr:nth-child(even){background:#f9fbfd}
+@media print{.compare-table-scroll{overflow:visible}.compare-table{min-width:0;font-size:9pt}.compare-table tr{break-inside:avoid-page}}
+
 </style>
 </head>
 <body>
@@ -84,7 +126,7 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
   <button class="tab" data-tab="topics">考点提示速查</button>
   <button class="tab" data-tab="systems">法典与制度索引</button>
   <button class="tab" data-tab="compare">历代制度横向对比</button>
- </nav>
+ <button type="button" class="print-source-btn" onclick="window.print()" title="仅打印当前学科的考试分析教材正文">打印考试分析</button></nav>
  <section class="panel active" id="panel-analysis">
   <div class="tools"><input id="searchInput" type="search" placeholder="检索朝代、法典、法律制度、司法机构或原文"><button id="clearSearch">清除检索</button><span class="pill" id="searchStatus">原文加载中</span></div>
   <div class="result-box" id="searchResults"></div>
@@ -117,6 +159,8 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
    <button id="clearCompare">清除筛选</button>
   </div>
   <div class="compare-memory" id="compareMemory"></div>
+  <div class="compare-view-switch"><button id="compareViewToggle" type="button" aria-pressed="true">切换为卡片视图</button><span>表格视图适合同一专题跨朝代对照，支持横向滚动。</span></div>
+  <div class="compare-table-scroll" id="compareTableScroll"><table class="compare-table" id="compareTable"><thead><tr><th>比较专题</th><th>朝代／时期</th><th>制度名称</th><th>核心内容</th><th>易混点／区别</th><th>教材</th></tr></thead><tbody id="compareTableBody"></tbody></table></div>
   <div class="compare-grid" id="compareGrid"></div>
   <p class="source-note">比较内容以《2026版考试分析·中国法制史》原文为依据，采用便于复习的归纳表达。涉及制度沿革、适用范围和历史评价时，请以“定位教材”所指向的原文为准；不同朝代名称相近的制度不作简单等同。</p>
  </section>
@@ -168,7 +212,8 @@ function renderMarkdown(text){
   if(h){
    flush();
    const level=h[1].length,rawTitle=h[2].trim().replace(/\s+#+$/,"");
-   const isTopic=/^▶\s*/.test(rawTitle),title=rawTitle.replace(/^▶\s*/,"").trim();
+   const isTopic=/^▶\s*/.test(rawTitle);
+   const title=rawTitle.replace(/^▶\s*/,"").replace(/^[一二三四五六七八九十]\s+(?=第[一二三四五六七八九十]+节)/,"").replace(/(\s+[一二三四五六七八九十])(?=\s*$)/,"").trim();
    const id="history-heading-"+(hIndex++);
    const cm=title.match(/(第[一二三四五六七八九十百]+章\s*.+)/);
     const isChapter=level<=3&&!!cm;
@@ -189,6 +234,14 @@ function renderMarkdown(text){
     topics.push({title,id,chapter:currentChapter});
    out.push('<h5 id="'+id+'" class="doc-subheading prompt" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');
    continue;
+  }
+  if(!listType&&t.length>=2&&t.length<=42&&!/[。！？；，、,.!?;]/.test(t)&&! /^(?:【|[（(]|\d+[.、]|第[一二三四五六七八九十百]+[章节])/.test(t)){
+   const next=lines.slice(i+1).map(x=>x.trim()).find(Boolean)||"";
+   if(next.startsWith("【分析】")){
+    flush();
+    out.push('<h5 class="doc-subheading" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</h5>');
+    continue;
+   }
   }
   const ol=t.match(/^(\d+)[.、．)]\s*(.+)$/);
   const alpha=t.match(/^([A-DＡ-Ｄ])[.．、)]\s*(.+)$/);
@@ -259,6 +312,7 @@ function filterSystems(){
  $("systemGrid").querySelectorAll("[data-system-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.systemJump));
 }
 
+let compareView="table";
 const comparisonSets=[
  {id:"law",title:"法律形式与法典编纂",intro:"比较法律载体、法典体例与重要法典的形成。",memory:"主线：先秦刑书与公布成文法 → 战国《法经》、秦汉律令 → 隋唐律令格式 → 宋编敕 → 元代法典汇编 → 明律六部分篇 → 清律例、会典与则例 → 近代六法体系。",rows:[
   {era:"夏商西周",name:"禹刑、汤刑、九刑、吕刑",detail:"“禹刑”泛指夏朝法律和刑罚；“汤刑”被认为是商朝法律总称；西周“九刑”既可指九篇刑书，也可指九种刑罚；《吕刑》是西周中期代表性刑法。",distinction:"这些名称不能都当作结构完整、内容相同的成文法典；“九刑”尤其有两种含义。",source:"禹刑"},
@@ -362,11 +416,21 @@ function filterComparisons(){
  const rows=sets.flatMap(s=>s.rows.filter(r=>(!era||r.era===era)&&(!q||[s.title,r.era,r.name,r.detail,r.distinction].join(" ").toLowerCase().includes(q))).map(r=>({...r,set:s})));
  const activeSet=sets.length===1?sets[0]:null;
  $("compareMemory").innerHTML=activeSet?'<b>'+esc(activeSet.title)+' · 纵向记忆主线</b><p>'+esc(activeSet.memory)+'</p><div class="compare-flow">'+activeSet.memory.split(" → ").map(x=>'<span>'+esc(x)+'</span>').join("")+'</div>':'<b>跨朝代比较总览</b><p>先选择一个制度专题，再按朝代筛选；每张卡片列出该时期的制度内容、易混辨析和教材定位。</p>';
+ const grid=$("compareGrid"),table=$("compareTableScroll"),tbody=$("compareTableBody");
+ grid.style.display=compareView==="cards"?"":"none";
+ table.style.display=compareView==="table"?"":"none";
+ $("compareViewToggle").textContent=compareView==="table"?"切换为卡片视图":"切换为表格视图";
+ $("compareViewToggle").setAttribute("aria-pressed",String(compareView==="table"));
+ tbody.innerHTML=rows.length?rows.map(r=>{
+  const sid=findCompareSource(r.source);
+  return '<tr><td>'+esc(r.set.title)+'</td><td>'+esc(r.era)+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.detail)+'</td><td>'+esc(r.distinction)+'</td><td>'+(sid?'<button class="compare-source" data-compare-jump="'+sid+'">定位教材</button>':'<small>参见对应章节</small>')+'</td></tr>';
+ }).join(""):'<tr><td colspan="6">没有找到符合条件的比较内容，请调整筛选。</td></tr>';
  $("compareGrid").innerHTML=rows.length?rows.map(r=>{
   const sid=findCompareSource(r.source);
   return '<article class="compare-card"><div class="compare-card-head"><span class="compare-era">'+esc(r.era)+'</span><h3>'+esc(r.name)+'</h3></div><p class="compare-detail">'+esc(r.detail)+'</p><div class="compare-distinction"><strong>对比记忆：</strong>'+esc(r.distinction)+'</div><div class="compare-card-foot"><small>'+esc(r.set.title)+'</small>'+(sid?'<button class="compare-source" data-compare-jump="'+sid+'">定位教材原文</button>':'<small>教材定位：对应时期章节</small>')+'</div></article>';
  }).join(""):'<div class="compare-empty">没有找到符合条件的比较内容，请调整专题、朝代或关键词。</div>';
  $("compareGrid").querySelectorAll("[data-compare-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.compareJump));
+ $("compareTableBody").querySelectorAll("[data-compare-jump]").forEach(b=>b.onclick=()=>jumpTo(b.dataset.compareJump));
 }
 
 function searchFull(q){
@@ -380,6 +444,7 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>activateTab(b.dataset
 $("searchInput").oninput=e=>searchFull(e.target.value.trim());$("clearSearch").onclick=()=>{$("searchInput").value="";searchFull("");};
 $("topicSearch").oninput=filterTopics;$("topicChapter").onchange=filterTopics;$("clearTopics").onclick=()=>{$("topicSearch").value="";$("topicChapter").value="";filterTopics();};
 $("systemSearch").oninput=filterSystems;$("systemCategory").onchange=filterSystems;$("clearSystems").onclick=()=>{$("systemSearch").value="";$("systemCategory").value="";filterSystems();};
+$("compareViewToggle").onclick=()=>{compareView=compareView==="table"?"cards":"table";filterComparisons();};
 $("compareTopic").onchange=filterComparisons;$("compareEra").onchange=filterComparisons;$("compareSearch").oninput=filterComparisons;$("clearCompare").onclick=()=>{$("compareTopic").value="";$("compareEra").value="";$("compareSearch").value="";filterComparisons();};
 async function init(){
  try{
