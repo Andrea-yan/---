@@ -248,10 +248,10 @@ function renderMarkdown(text){
  for(let i=0;i<lines.length;i++){
   const t=lines[i].trim();if(!t){
    const next=lines.slice(i+1).map(x=>x.trim()).find(Boolean)||"";
-   const isBareHeading=s=>!!s&&s.length<=30&&!/[。！？；：，、,.!?;:]/.test(s)&&!/^([#>*▶【]|\\d+[.、]|[-*]\\s|[A-DＡ-Ｄ][.．、]|第[一二三四五六七八九十百]+[章节])/.test(s);
+   const isBareHeading=s=>!!s&&s.length<=30&&!/[。！？；：，、,.!?;:]/.test(s)&&!/^([#>*▶【]|\d+[.、]|[-*]\s|[A-DＡ-Ｄ][.．、]|第[一二三四五六七八九十百]+[章节])/.test(s);
    const isIncomplete=s=>!!s&&!/[。！？；.!?;]/.test(s.slice(-1));
-   const nextList=/^(\\d+[.、]|[-*]\\s+|[A-DＡ-Ｄ][.．、])/.test(next);
-   if(listType&&next&&((listType==="ol"&&(/^(\\d+[.、]|[A-DＡ-Ｄ][.．、])/.test(next)))||(listType==="ul"&&/^[-*]\\s+/.test(next))))continue;
+   const nextList=/^(\d+[.、]|[-*]\s+|[A-DＡ-Ｄ][.．、])/.test(next);
+   if(listType&&next&&((listType==="ol"&&(/^(\d+[.、]|[A-DＡ-Ｄ][.．、])/.test(next)))||(listType==="ul"&&/^[-*]\s+/.test(next))))continue;
    if(listType&&items.length&&isIncomplete(items[items.length-1].text)&&next&&!nextList&&!isBareHeading(next)&&!/^([#▶【>])/.test(next))continue;
    if(p.length===1&&isBareHeading(p[0])){
     const title=p.pop();
@@ -274,7 +274,7 @@ function renderMarkdown(text){
    out.push('<h5 id="'+id+'" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');continue;
   }
   const ol=t.match(/^\d+[.、]\s*(.+)$/),ul=t.match(/^[-*]\s+(.+)$/);
-  if(ol||ul){flushP();const typ=ol?"ol":"ul";if(listType&&listType!==typ)flushList();listType=typ;items.push({text:(ol||ul)[1],value:ol?Number(ol[0].match(/^\\d+/)[0]):null});continue;}
+  if(ol||ul){flushP();const typ=ol?"ol":"ul";if(listType&&listType!==typ)flushList();listType=typ;items.push({text:(ol||ul)[1],value:ol?Number(ol[0].match(/^\d+/)[0]):null});continue;}
   if(/^>\s?/.test(t)){flushP();flushList();out.push("<blockquote>"+inline(t.replace(/^>\s?/,""))+"</blockquote>");continue;}
   if(listType){items[items.length-1].text+=" "+t;}else{p.push(t);}
  }
