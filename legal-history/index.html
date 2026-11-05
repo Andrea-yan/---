@@ -105,6 +105,22 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
 .compare-table tr:nth-child(even){background:#f9fbfd}
 @media print{.compare-table-scroll{overflow:visible}.compare-table{min-width:0;font-size:9pt}.compare-table tr{break-inside:avoid-page}}
 
+
+/* 可滚动专题选择器：单一专题筛选同步至表格和卡片 */
+.compare-topic-picker{position:relative;min-width:0;z-index:12}
+.compare-topic-label{display:block;font-size:11px;color:#60748a;margin:0 0 5px;font-weight:700}
+.compare-topic-native{display:none!important}
+.compare-tools .compare-topic-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px;padding:8px 11px;border:1px solid #a9bfd1;background:#f8fbfe;color:#173451;text-align:left;font-size:13px;font-weight:750;border-radius:8px}
+.compare-topic-trigger[aria-expanded="true"]{outline:2px solid #bfd9ec;outline-offset:1px;background:#ecf5fc}
+.compare-topic-trigger span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.compare-topic-menu{position:absolute;top:calc(100% + 5px);left:0;width:max(100%,260px);max-width:min(360px,90vw);max-height:250px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border:1px solid #bdcddd;box-shadow:0 12px 25px #142b4327;background:white;border-radius:9px;padding:5px;z-index:40}
+.compare-topic-menu[hidden]{display:none!important}
+.compare-tools .compare-topic-option{display:block;width:100%;text-align:left;padding:11px 12px;background:white;color:#334d68;border:0;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer}
+.compare-tools .compare-topic-option:hover,.compare-tools .compare-topic-option:focus-visible{background:#eaf2f9}
+.compare-tools .compare-topic-option[aria-selected="true"]{background:#e6f0f8;color:#134d7c;font-weight:800}
+.compare-topic-result{font-size:12px;font-weight:700;color:#315776;align-self:center}
+@media(max-width:520px){.compare-topic-menu{width:100%;max-width:100%;max-height:230px}}
+
 </style>
 </head>
 <body>
@@ -153,11 +169,17 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
    <div><span class="pill">新增学习板块</span><h2>历代制度横向对比</h2><p>把相同制度放在不同朝代中纵向观察，重点辨析制度名称、核心内容、沿革关系与易混点。每条比较均可跳转到考试分析对应原文。</p></div>
   </div>
   <div class="compare-tools">
-   <select id="compareTopic"><option value="">全部比较专题</option></select>
+   <div class="compare-topic-picker" id="compareTopicPicker">
+    <label class="compare-topic-label" for="compareTopicTrigger">比较专题（选择后仅显示该专题）</label>
+    <button type="button" id="compareTopicTrigger" class="compare-topic-trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="compareTopicMenu"><span id="compareTopicCurrent">全部比较专题</span><span aria-hidden="true">▾</span></button>
+    <div class="compare-topic-menu" id="compareTopicMenu" role="listbox" aria-label="选择比较专题" hidden></div>
+    <select id="compareTopic" class="compare-topic-native" tabindex="-1" aria-hidden="true"><option value="">全部比较专题</option></select>
+   </div>
    <select id="compareEra"><option value="">全部朝代／时期</option></select>
    <input id="compareSearch" type="search" placeholder="搜索制度名称、朝代或易混点">
    <button id="clearCompare">清除筛选</button>
   </div>
+  <p class="compare-topic-result" id="compareTopicResult" aria-live="polite">当前显示：全部比较专题</p>
   <div class="compare-memory" id="compareMemory"></div>
   <div class="compare-view-switch"><button id="compareViewToggle" type="button" aria-pressed="true">切换为卡片视图</button><span>表格视图适合同一专题跨朝代对照，支持横向滚动。</span></div>
   <div class="compare-table-scroll" id="compareTableScroll"><table class="compare-table" id="compareTable"><thead><tr><th>比较专题</th><th>朝代／时期</th><th>制度名称</th><th>核心内容</th><th>易混点／区别</th><th>教材</th></tr></thead><tbody id="compareTableBody"></tbody></table></div>
@@ -407,14 +429,34 @@ function findCompareSource(term){
 }
 function buildCompareFilters(){
  $("compareTopic").innerHTML='<option value="">全部比较专题</option>'+comparisonSets.map(s=>'<option value="'+s.id+'">'+esc(s.title)+'</option>').join("");
+ $("compareTopicMenu").innerHTML='<button type="button" class="compare-topic-option" role="option" data-topic-value="" aria-selected="true">全部比较专题</button>'+comparisonSets.map(s=>'<button type="button" class="compare-topic-option" role="option" data-topic-value="'+esc(s.id)+'" aria-selected="false">'+esc(s.title)+'</button>').join("");
+ $("compareTopicMenu").querySelectorAll("[data-topic-value]").forEach(b=>b.onclick=()=>{
+  $("compareTopic").value=b.dataset.topicValue;
+  closeCompareTopicMenu();
+  filterComparisons();
+ });
  const eras=[...new Set(comparisonSets.flatMap(s=>s.rows.map(r=>r.era)))];
  $("compareEra").innerHTML='<option value="">全部朝代／时期</option>'+eras.map(e=>'<option value="'+esc(e)+'">'+esc(e)+'</option>').join("");
 }
+function closeCompareTopicMenu(){
+ $("compareTopicMenu").hidden=true;
+ $("compareTopicTrigger").setAttribute("aria-expanded","false");
+}
+function syncCompareTopicPicker(){
+ const selected=$("compareTopic").value;
+ const set=comparisonSets.find(x=>x.id===selected);
+ $("compareTopicCurrent").textContent=set?set.title:"全部比较专题";
+ $("compareTopicMenu").querySelectorAll("[data-topic-value]").forEach(b=>{
+  b.setAttribute("aria-selected",String(b.dataset.topicValue===selected));
+ });
+}
 function filterComparisons(){
  const setId=$("compareTopic").value,era=$("compareEra").value,q=$("compareSearch").value.trim().toLowerCase();
+ syncCompareTopicPicker();
  const sets=comparisonSets.filter(s=>!setId||s.id===setId);
  const rows=sets.flatMap(s=>s.rows.filter(r=>(!era||r.era===era)&&(!q||[s.title,r.era,r.name,r.detail,r.distinction].join(" ").toLowerCase().includes(q))).map(r=>({...r,set:s})));
  const activeSet=sets.length===1?sets[0]:null;
+ $("compareTopicResult").textContent="当前显示："+(activeSet?activeSet.title:"全部比较专题")+" · "+rows.length+" 条制度对比";
  $("compareMemory").innerHTML=activeSet?'<b>'+esc(activeSet.title)+' · 纵向记忆主线</b><p>'+esc(activeSet.memory)+'</p><div class="compare-flow">'+activeSet.memory.split(" → ").map(x=>'<span>'+esc(x)+'</span>').join("")+'</div>':'<b>跨朝代比较总览</b><p>先选择一个制度专题，再按朝代筛选；每张卡片列出该时期的制度内容、易混辨析和教材定位。</p>';
  const grid=$("compareGrid"),table=$("compareTableScroll"),tbody=$("compareTableBody");
  grid.style.display=compareView==="cards"?"":"none";
@@ -445,6 +487,15 @@ $("searchInput").oninput=e=>searchFull(e.target.value.trim());$("clearSearch").o
 $("topicSearch").oninput=filterTopics;$("topicChapter").onchange=filterTopics;$("clearTopics").onclick=()=>{$("topicSearch").value="";$("topicChapter").value="";filterTopics();};
 $("systemSearch").oninput=filterSystems;$("systemCategory").onchange=filterSystems;$("clearSystems").onclick=()=>{$("systemSearch").value="";$("systemCategory").value="";filterSystems();};
 $("compareViewToggle").onclick=()=>{compareView=compareView==="table"?"cards":"table";filterComparisons();};
+$("compareTopicTrigger").onclick=()=>{
+ const menu=$("compareTopicMenu"),open=menu.hidden;
+ menu.hidden=!open;
+ $("compareTopicTrigger").setAttribute("aria-expanded",String(open));
+ if(open){const active=menu.querySelector('[aria-selected="true"]');if(active)active.scrollIntoView({block:"nearest"});}
+};
+$("compareTopicTrigger").onkeydown=e=>{if(e.key==="Escape"){closeCompareTopicMenu();}else if(e.key==="ArrowDown"||e.key==="Enter"){if($("compareTopicMenu").hidden){e.preventDefault();$("compareTopicTrigger").click();}}};
+document.addEventListener("pointerdown",e=>{if(!$("compareTopicPicker").contains(e.target))closeCompareTopicMenu();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCompareTopicMenu();});
 $("compareTopic").onchange=filterComparisons;$("compareEra").onchange=filterComparisons;$("compareSearch").oninput=filterComparisons;$("clearCompare").onclick=()=>{$("compareTopic").value="";$("compareEra").value="";$("compareSearch").value="";filterComparisons();};
 async function init(){
  try{
