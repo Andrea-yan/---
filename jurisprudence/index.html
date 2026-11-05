@@ -116,6 +116,13 @@ h1{font-size:clamp(23px,3vw,32px);margin:14px 0 6px}.sub{font-size:13px;color:#d
 @media(max-width:640px){.study-reader-tools{padding:9px;gap:6px}.study-reader-tools label{display:none}.study-reader-tools select{width:100%;min-width:100%;flex-basis:100%}.study-reader-tools button{flex:1}.doc{overflow-wrap:anywhere;word-break:normal}}
 @media print{.study-reader-tools{display:none!important}.layout.focus-reading .doc{max-width:none!important}}
 
+
+/* 独立数字标题与教材说明标题 */
+.doc .doc-numbered-heading{margin:18px 0 9px;padding:8px 12px;border-bottom:1px solid #d5e2ee;border-left:3px solid #6795b8;color:#2c5678;font-size:15px;font-weight:800}
+.doc .doc-inline-analysis{background:none!important;color:#35556b!important;border:0!important;padding:4px 0!important;margin:10px 0 5px!important;font-size:13px!important;font-weight:700!important}
+@media print{.doc .doc-numbered-heading,.doc .doc-inline-analysis,.doc p.subject-definition,.doc p.subject-contrast,.doc p.subject-source,.doc p.subject-statute,.doc p.subject-recognition{background:none!important;color:#111!important;border-color:#888!important}}
+
+.doc p.subject-contrast{padding:10px 12px;border-left:3px solid #c09a5e;background:#fff9f1;border-radius:0 6px 6px 0}.doc p.subject-definition{padding:10px 12px;border-left:3px solid #5988a9;background:#f3f8fc;border-radius:0 6px 6px 0}
 </style>
 </head>
 <body>
@@ -210,12 +217,13 @@ function initReaderTools(){
  focus.onclick=()=>{const layout=doc.closest(".layout"),enabled=layout.classList.toggle("focus-reading");focus.setAttribute("aria-pressed",String(enabled));focus.textContent=enabled?"退出专注阅读":"专注阅读";};
  back.onclick=()=>{const id=back.dataset.currentChapter||select.value;const el=id?$(id):null;(el||doc).scrollIntoView({behavior:"smooth",block:"start"});};
 }
+function studySubjectClass(t){if(/^(?:【分析】)?(?:两者|二者|法律原则与法律规则|法与道德|法与宗教|法律规则与法律原则).{0,65}(?:区别|联系|关系)/.test(t))return "subject-contrast";if(/^(?:【分析】)?.{2,35}(?:是指|是对|即指|是由)/.test(t))return "subject-definition";return "";}
 function renderMarkdown(text){
  const lines=repairBrokenSource(text).split("\n"),out=[];
  let p=[],listType="",items=[],hIndex=0,topicIndex=0,pIndex=0,currentChapter="";
  const flushP=()=>{
   if(!p.length)return;
-  const t=joinStudyLines(p).trim(),cls=t.startsWith("【分析】")?"analysis":"";
+  const t=joinStudyLines(p).trim(),cls=(t.startsWith("【分析】")?"analysis":"")+(studySubjectClass(t)?" "+studySubjectClass(t):"");
   out.push('<p id="jurisprudence-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+studyParagraph(t)+'</p>');
   p=[];
  };
@@ -263,7 +271,9 @@ function renderMarkdown(text){
    if(isChapter)classes.push("chapter-heading");
    else if(/^[-—–\s]*第[一二三四五六七八九十百]+节/.test(title))classes.push("doc-section-heading");
    else if(/^[一二三四五六七八九十百]+[、.．]/.test(title))classes.push("doc-point-heading");
+   else if(/^(?:\d+[.、．)]|（[一二三四五六七八九十]+）)/.test(title))classes.push("doc-numbered-heading");
    if(isTopic||level>=5)classes.push("doc-subheading");
+   if(/^【分析】/.test(title))classes.push("doc-inline-analysis");
    if(isTopic)classes.push("source-topic");
    out.push('<h'+Math.min(level,6)+' id="'+id+'" class="'+classes.join(" ")+'" data-search="'+esc((rawTitle+" "+title).toLowerCase())+'">'+inline(title)+'</h'+Math.min(level,6)+'>');
    continue;
