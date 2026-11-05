@@ -218,6 +218,20 @@ button{cursor:pointer}
  .detail-block p{font-size:14px;line-height:1.9}
 }
 
+
+/* 史纲：层级标题、独立史实条目、分号分行与重点标注 */
+.detail-block h4{font-size:15px!important;font-weight:800!important;color:#265879!important;border-left:4px solid #c28b41!important;padding:7px 10px!important;background:#f1f6fa!important;border-radius:0 5px 5px 0}
+.chapter-card h3,.study-card h3{font-weight:850;color:#193e60;line-height:1.6;border-bottom:1px solid #dee7f0;padding-bottom:7px}
+.chapter-card .section-label{font-weight:850;color:#966426;background:#fff6e8;display:inline-block;padding:5px 9px;border-radius:5px}
+.chapter-card .focus{border-left:3px solid #4879a4;padding:9px 11px;background:#f1f6fb;border-radius:0 7px 7px 0;line-height:1.8}
+.chapter-card .focus b,.study-answer strong{color:#205c88}
+.q-card h3{font-weight:800;color:#1d527c}
+.detail-body .study-list,.detail-body .study-lines,.chapter-card .study-list,.chapter-card .study-lines,.study-answer .study-list,.study-answer .study-lines,.q-card .study-list,.q-card .study-lines{display:block;margin:7px 0}
+.study-item,.study-line{display:block;margin:5px 0;padding:6px 9px 6px 12px;border-left:2px solid #cadceb;background:#f8fbfe;border-radius:0 5px 5px 0;line-height:1.9}
+.study-item>b{color:#1b608e;margin-right:7px}
+.study-intro{display:block;margin-bottom:6px}
+@media print{.study-item,.study-line,.chapter-card .focus{background:none!important;color:#111!important}}
+
 </style>
 </head>
 <body>
@@ -504,15 +518,32 @@ function showDetail(id,rerender=true,openOnSmallScreen=true){
   document.body.classList.add("detail-open");
  }
 }
+function historyEscape(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function studyParts(text){
+ const raw=String(text),matches=[...raw.matchAll(/（[1-9]\d?）|[①②③④⑤⑥⑦⑧⑨⑩]/g)];
+ if(matches.length>=2){
+  const p=raw.slice(0,matches[0].index),out=[];
+  for(let i=0;i<matches.length;i++){const a=matches[i],b=i+1<matches.length?matches[i+1].index:raw.length;out.push('<span class="study-item"><b>'+historyEscape(a[0])+'</b>'+studySemis(raw.slice(a.index+a[0].length,b).trim())+'</span>');}
+  return (p?'<span class="study-intro">'+studySemis(p)+'</span>':"")+'<span class="study-list">'+out.join("")+'</span>';
+ }
+ return studySemis(raw);
+}
+function studySemis(raw){
+ const a=[];let chunk="",depth=0,quote=false;
+ for(const c of String(raw)){chunk+=c;if("（(《【".includes(c))depth++;else if("）)》】".includes(c))depth=Math.max(0,depth-1);else if(c==="“")quote=true;else if(c==="”")quote=false;
+ if((c==="；"||c===";")&&!depth&&!quote){a.push(chunk);chunk="";}}
+ if(chunk)a.push(chunk);if(a.length<2)return historyEscape(raw);
+ return '<span class="study-lines">'+a.map(x=>'<span class="study-line">'+historyEscape(x.trim())+'</span>').join("")+'</span>';
+}
 function renderDetail(e){
  if(!e){$("detail").innerHTML=`<div class="detail-head"><div class="eyebrow">EVENT DETAILS / 考点卡片</div><h2>选择一个历史事件</h2><div class="detail-date">点击左侧时间轴节点</div></div>`;return;}
  $("detail").innerHTML=`
  <div class="detail-head"><button class="detail-mobile-close" id="closeMobileDetail" type="button" aria-label="关闭考点详情">关闭 ×</button><div class="eyebrow">${periodNames[e.p]} · ${e.c} · 第${chapterForEvent(e)}章</div><h2>${quiz?'事件名称已隐藏':e.t}</h2><div class="detail-date">${e.d}</div></div>
  <div class="detail-body">
-  <div class="detail-block"><h4>事件概述</h4><p>${e.s}</p></div>
-  <div class="detail-block"><h4>历史背景</h4><p>${quiz?'（记忆检测模式：先尝试回忆，再关闭检测查看）':e.b}</p></div>
-  <div class="detail-block"><h4>主要内容 / 发展过程</h4><p>${quiz?'内容已隐藏。请先口头复述事件的主要经过。':e.m}</p></div>
-  <div class="detail-block exam-note"><h4>考研提示</h4><p>${quiz?'内容已隐藏。请先回忆该事件的历史意义、易混点和常见考查角度。':e.e}</p></div>
+  <div class="detail-block"><h4>事件概述</h4><p>${studyParts(e.s)}</p></div>
+  <div class="detail-block"><h4>历史背景</h4><p>${quiz?'（记忆检测模式：先尝试回忆，再关闭检测查看）':studyParts(e.b)}</p></div>
+  <div class="detail-block"><h4>主要内容 / 发展过程</h4><p>${quiz?'内容已隐藏。请先口头复述事件的主要经过。':studyParts(e.m)}</p></div>
+  <div class="detail-block exam-note"><h4>考研提示</h4><p>${quiz?'内容已隐藏。请先回忆该事件的历史意义、易混点和常见考查角度。':studyParts(e.e)}</p></div>
   <div class="detail-block"><h4>关键词</h4><div class="keywords">${e.k.map(k=>`<span class="keyword">${k}</span>`).join("")}</div></div>
   <div class="detail-block"><h4>历年真题关联（本章）</h4><div class="q-links">${pastQuestions.filter(q=>q.chapter===chapterForEvent(e)).slice(0,8).map(q=>`<button class="q-link" data-qjump="${q.year}-${q.no}">${q.year}年·${q.no}题 ${q.type}</button>`).join("")||'<span class="chapter-count">当前索引暂无本章题目</span>'}</div></div>
   <div class="quiz"><h4>主动回忆</h4><p>不看资料，试着回答：这一事件发生的背景是什么？它改变了什么？与前后哪些事件有关？</p><input id="recall" placeholder="写下你的关键词（仅本次页面临时显示）"><button id="saveRecall">记录我的回忆</button><div class="quiz-result" id="recallResult"></div></div>
@@ -535,11 +566,11 @@ function renderChapters(){
   return `<article class="chapter-card">
    <div class="chapter-meta">${c.part} · ${c.years}</div>
    <h3>第${c.n}章 ${c.title}</h3>
-   <p>${c.overview}</p>
+   <p>${studyParts(c.overview)}</p>
    <div class="section-label">知识点清单</div>
    <ul>${c.topics.map(t=>`<li>${t}</li>`).join("")}</ul>
-   <p class="focus"><b>重点：</b>${c.focus}</p>
-   <p><b>易混点：</b>${c.trap}</p>
+   <p class="focus"><b>重点：</b>${studyParts(c.focus)}</p>
+   <p><b>易混点：</b>${studyParts(c.trap)}</p>
    <div class="chapter-actions"><span class="chapter-count">${count}个时间节点 · ${qcount}道真题索引</span><button data-chapter-open="${c.n}">查看本章时间轴</button></div>
   </article>`;
  }).join("");
@@ -561,7 +592,7 @@ function renderQuestions(){
  $("qCount").textContent=`${arr.length} / ${pastQuestions.length} 条索引`;
  $("questionGrid").innerHTML=arr.length?arr.map(q=>`<article class="q-card">
   <div class="q-card-top"><span class="q-year">${q.year}年 · 第${q.no}题</span><span class="q-type">${q.type}题</span></div>
-  <h3>${q.title}</h3><p>${q.focus}</p>
+  <h3>${q.title}</h3><p>${studyParts(q.focus)}</p>
   <small>对应：第${q.chapter}章 ${chapters.find(c=>c.n===q.chapter).title} · 来源：${q.source}</small>
   <button data-qchapter="${q.chapter}">查看对应章节</button>
  </article>`).join(""):'<div class="empty">没有找到匹配的真题索引，请调整筛选条件。</div>';
@@ -639,7 +670,7 @@ function renderStudy(){
    <div class="study-card-head"><span class="chapter-meta">第${c.ch}章 · ${chapters.find(x=>x.n===c.ch).title}</span><span class="study-status">${label}</span></div>
    <h3>${c.title}</h3>
    <div class="study-question">${c.q}</div>
-   <div class="study-answer" id="answer-${c.id}"><p>${c.a}</p><div class="study-keys">${c.k.map(k=>`<span class="keyword">${k}</span>`).join("")}</div></div>
+   <div class="study-answer" id="answer-${c.id}"><p>${studyParts(c.a)}</p><div class="study-keys">${c.k.map(k=>`<span class="keyword">${k}</span>`).join("")}</div></div>
    <div class="study-actions">
     <button class="reveal" data-reveal="${c.id}">展开参考提纲</button>
     <button class="mastered" data-rate="mastered" data-id="${c.id}">已掌握</button>
