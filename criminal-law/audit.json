@@ -3,8 +3,8 @@
   "sourceFile": "26版考试分析【刑法学】.md",
   "importedFile": "criminal-law/exam-analysis.md",
   "originalReportedLines": 2738,
-  "importedCharacters": 174801,
-  "importedLines": 2734,
+  "importedCharacters": 174805,
+  "importedLines": 2738,
   "markdownHeadingCount": 436,
   "chapterCount": 21,
   "chapters": [
@@ -32,7 +32,7 @@
   ],
   "sectionHeadingCount": 56,
   "promptHeadingCount": 88,
-  "importMethod": "按资料库原文件顺序分5段完整读取并无损拼接；正文不作摘要、不删减。",
+  "importMethod": "按资料库原文件的5个连续行区间读取，区间边界补回换行符后顺序拼接；正文不作摘要、不删减。",
   "validation": [
     "原文首部与末尾均存在",
     "21章标题均已检出",
