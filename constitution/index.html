@@ -57,6 +57,32 @@ iframe{display:block;width:100%;min-height:1100px;border:1px solid var(--line);b
 .doc ol li::marker{color:#315f86;font-weight:800}
 @media(max-width:520px){.doc .doc-subheading{font-size:16px;margin:18px 0 9px;padding:8px 11px}}
 
+
+/* A4打印：仅输出考试分析原文，不输出搜索和索引页面 */
+@page{size:A4;margin:18mm 16mm}
+@media print{
+ html,body{background:#fff!important;color:#111!important;font-family:"SimSun","Songti SC",serif!important;font-size:11pt!important}
+ header,.stats,.tabs,.tools,.sidebar,.content-head,.source-note,.search-results,.result-box,.print-source-btn{display:none!important}
+ .wrap,main{max-width:none!important;width:100%!important;margin:0!important;padding:0!important}
+ .panel,.panel.active{display:none!important}
+ #panel-analysis{display:block!important}
+ .layout,.content,.content-body,.doc{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important}
+ .doc{font-size:11pt!important;line-height:1.7!important}
+ .doc p,.doc li{font-size:11pt!important;line-height:1.7!important;orphans:3;widows:3}
+ .doc h1,.doc h2,.doc h3,.doc h4,.doc h5,.doc h6{color:#111!important;break-after:avoid-page;page-break-after:avoid;font-family:"SimHei","Heiti SC",sans-serif!important}
+ .doc h1.chapter-heading,.doc h2.chapter-heading{break-before:page;page-break-before:always}
+ .doc h1.chapter-heading:first-child,.doc h2.chapter-heading:first-child{break-before:auto;page-break-before:auto}
+ .doc .doc-subheading{background:none!important;border-left:2px solid #666!important;color:#111!important;padding:2px 8px!important;font-size:11pt!important}
+ .doc .answer-key{background:none!important;color:#111!important;text-decoration:none!important;font-weight:700!important}
+ .doc ol,.doc ul{padding-left:2em!important}
+ .doc li{break-inside:avoid-page}
+ .doc blockquote{break-inside:avoid-page}
+ .print-source-btn{display:none!important}
+}
+.print-source-btn{margin-left:auto;border:1px solid #cbd6e2;background:#fff;color:#315776;border-radius:8px;padding:9px 13px;font-size:12px;font-weight:700;cursor:pointer}
+.print-source-btn:hover{background:#f0f5f9}
+@media(max-width:520px){.print-source-btn{margin:5px 0 0;width:100%}}
+
 </style>
 </head>
 <body>
@@ -72,7 +98,7 @@ iframe{display:block;width:100%;min-height:1100px;border:1px solid var(--line);b
   <div class="stat"><b id="headingStat">读取中</b><span>考试分析标题层级</span></div>
   <div class="stat"><b id="paragraphStat">读取中</b><span>宪法序言段落</span></div>
  </section>
- <nav class="tabs"><button class="tab active" data-tab="analysis">考试分析全文</button><button class="tab" data-tab="law">宪法143条全文</button><button class="tab" data-tab="cards">核心简答题卡</button></nav>
+ <nav class="tabs"><button class="tab active" data-tab="analysis">考试分析全文</button><button class="tab" data-tab="law">宪法143条全文</button><button class="tab" data-tab="cards">核心简答题卡</button><button type="button" class="print-source-btn" onclick="window.print()" title="仅打印当前学科的考试分析教材正文">打印考试分析</button></nav>
  <section class="panel active" id="panel-analysis">
   <div class="tools"><input id="examSearch" type="search" placeholder="检索考试分析中的概念、知识点或原文"><button id="clearExamSearch">清除检索</button><span class="pill" id="examStatus">原文加载中</span></div>
   <div class="search-results" id="examResults"></div>
@@ -139,7 +165,8 @@ function renderMarkdown(text){
   if(h){
    flush();
    const level=h[1].length,rawTitle=h[2].trim().replace(/\s+#+$/,"");
-   const isTopic=/^▶\s*/.test(rawTitle),title=rawTitle.replace(/^▶\s*/,"").trim();
+   const isTopic=/^▶\s*/.test(rawTitle);
+   const title=rawTitle.replace(/^▶\s*/,"").replace(/^[一二三四五六七八九十]\s+(?=第[一二三四五六七八九十]+节)/,"").replace(/(\s+[一二三四五六七八九十])(?=\s*$)/,"").trim();
    const id="exam-heading-"+(hIndex++);
    const isChapter=level===2&&/^第[一二三四五六七八九十百]+章/.test(title);
     examHeadings.push({title,level,id,isChapter});
@@ -156,6 +183,14 @@ function renderMarkdown(text){
    const id="exam-topic-"+(topicIndex++);
    out.push('<h5 id="'+id+'" class="doc-subheading prompt" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');
    continue;
+  }
+  if(!listType&&t.length>=2&&t.length<=42&&!/[。！？；，、,.!?;]/.test(t)&&! /^(?:【|[（(]|\d+[.、]|第[一二三四五六七八九十百]+[章节])/.test(t)){
+   const next=lines.slice(i+1).map(x=>x.trim()).find(Boolean)||"";
+   if(next.startsWith("【分析】")){
+    flush();
+    out.push('<h5 class="doc-subheading" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</h5>');
+    continue;
+   }
   }
   const ol=t.match(/^(\d+)[.、．)]\s*(.+)$/);
   const alpha=t.match(/^([A-DＡ-Ｄ])[.．、)]\s*(.+)$/);
