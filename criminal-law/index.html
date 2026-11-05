@@ -247,6 +247,31 @@ button:focus-visible,input:focus-visible,select:focus-visible{
 @media(max-width:520px){.doc .chapter-heading{font-size:19px!important}.doc .doc-section-heading{font-size:17px!important}.doc .doc-point-heading{font-size:16px!important}.doc .doc-subheading{font-size:14px!important}}
 @media print{.doc .chapter-heading,.doc .doc-section-heading,.doc .doc-point-heading,.doc .doc-subheading,.doc .study-item,.doc .analysis-label,.doc .key-sentence{background:none!important;color:#111!important}}
 
+
+/* 分则具体罪名：独立条目及辨析重点 */
+.doc .crime-card{margin:24px 0;border:1px solid #d9e5f0;border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 4px 15px #1c38530b}
+.doc .crime-card-head{padding:12px 16px;background:linear-gradient(100deg,#e7f2fa,#f7fbfd);border-bottom:1px solid #dbe7f1}
+.doc .crime-card-label{display:block;font-size:11px;font-weight:800;color:#557d9b;margin-bottom:3px}
+.doc .crime-card-title{margin:0!important;padding:0!important;color:#174a70!important;background:none!important;border:0!important;font-size:18px!important;font-weight:850!important;line-height:1.6!important}
+.doc .crime-card-content{padding:8px 17px 12px}
+.doc .crime-card-content p{margin:11px 0!important}
+.doc .crime-definition{background:#f3f8fc;padding:11px 13px!important;border-left:3px solid #5987a9;border-radius:0 7px 7px 0}
+.doc .crime-distinction{background:#fffaf1;padding:10px 13px!important;border-left:3px solid #d6a45a;border-radius:0 7px 7px 0}
+.doc .crime-distinction::before{content:"辨析重点";font-size:11px;font-weight:800;color:#936124;background:#f6ebd5;border-radius:4px;padding:2px 6px;margin-right:9px}
+.doc .crime-recognition{background:#f7fbfe;padding:9px 13px!important;border-left:3px solid #7ba5c3;border-radius:0 7px 7px 0}
+.doc .crime-recognition::before{content:"认定要点";font-size:11px;font-weight:800;color:#285f88;margin-right:8px}
+.doc .crime-syllabus{background:#f8fbfe;border:1px solid #dce7f0;border-radius:9px;margin:16px 0}
+.doc .crime-syllabus summary{cursor:pointer;padding:11px 14px;color:#315f80;font-size:13px;font-weight:800;line-height:1.65}
+.doc .crime-syllabus[open] summary{border-bottom:1px solid #dce7f0}
+.doc .crime-syllabus p{padding:12px 14px;margin:0!important;font-size:13px}
+.crime-quickbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 14px;border-bottom:1px solid #e1e9f1;background:#f7fafc}
+.crime-quickbar label{font-weight:800;color:#305c7d;font-size:12px}
+.crime-quickbar select{flex:1;min-width:220px;max-width:100%;padding:9px;border:1px solid #bacddd;border-radius:8px;background:#fff;color:#234f73;font-size:13px}
+.crime-quickbar small{font-size:11px;color:#71869b}
+.doc .crime-card:target{outline:3px solid #b2d3e8;scroll-margin-top:14px}
+@media(max-width:550px){.doc .crime-card-head{padding:10px 12px}.doc .crime-card-title{font-size:16px!important}.doc .crime-card-content{padding:7px 11px}.crime-quickbar select{min-width:100%}}
+@media print{.doc .crime-card{box-shadow:none;border-color:#aaa}.doc .crime-card-head,.doc .crime-definition,.doc .crime-distinction,.doc .crime-recognition{background:none!important}.doc .crime-card-title{color:#111!important}.doc .crime-card-head{break-after:avoid-page}.doc .crime-syllabus,.crime-quickbar{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -272,7 +297,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{
   <div class="result-box" id="searchResults"></div>
   <div class="layout">
    <aside class="sidebar"><div class="side-title">刑法学 · 二十一章目录</div><nav class="side-list" id="chapterNav"></nav></aside>
-   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·刑法学》</h2><p>总则与分则完整原文。点击左侧章节或使用全文检索定位知识点。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
+   <section class="content"><div class="content-head"><div><h2>《2026版考试分析·刑法学》</h2><p>总则与分则完整原文。点击左侧章节或使用全文检索定位知识点。</p></div><span class="pill" id="sourceStatus">正在载入</span></div><div class="crime-quickbar" id="crimeQuickbar" style="display:none"><label for="crimeJumpSelect">刑法分则 · 具体罪名速查</label><select id="crimeJumpSelect"><option value="">选择罪名以定位正文</option></select><small id="crimeJumpCount"></small></div><div class="content-body doc" id="analysisContent">正在读取完整考试分析原文……</div></section>
   </div>
  </section>
  <section class="panel" id="panel-chapters">
@@ -287,7 +312,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{
 </main>
 <script>
 const $=id=>document.getElementById(id);
-let md="",headings=[],topics=[],chapters=[],chapterIds=[];
+let md="",headings=[],topics=[],chapters=[],chapterIds=[],crimeIds=[];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>").replace(/\^\{([^}]+)\}/g,"<sup>$1</sup>").replace(/\$([^$]+)\$/g,'<span class="math">$1</span>');}
 
@@ -340,10 +365,27 @@ function joinStudyLines(parts){
 function renderMarkdown(text){
  const lines=repairBrokenSource(text).split("\n"),out=[];
  let p=[],listType="",items=[],hIndex=0,topicIndex=0,pIndex=0,currentChapter="";
+ let inCrimeChapters=false,inCrimeDetails=false,crimeCardOpen=false;
+ const closeCrimeCard=()=>{if(crimeCardOpen){out.push("</div></section>");crimeCardOpen=false;}};
+ const crimeName=t=>{const m=t.replace(/^【分析】/,"").trim().match(/^([^。！？；：]{2,65}?罪)(?:，?是指|，?即指|，?即)/);return m?m[1]:null;};
  const flushP=()=>{
   if(!p.length)return;
   const t=joinStudyLines(p).trim(),cls=t.startsWith("【分析】")?"analysis":"";
-  out.push('<p id="criminal-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+studyParagraph(t)+'</p>');
+  if(inCrimeDetails){
+   const name=crimeName(t);
+   if(name){
+    closeCrimeCard();
+    const id="crime-card-"+crimeIds.length,chapter=chapterIds.length?chapterIds[chapterIds.length-1].title:"刑法分则";
+    crimeIds.push({id,name,chapter});
+    out.push('<section class="crime-card" id="'+id+'" data-crime-name="'+esc(name)+'"><div class="crime-card-head"><span class="crime-card-label">具体罪名 · 概念与认定</span><h4 class="crime-card-title">'+inline(name)+'</h4></div><div class="crime-card-content">');
+    crimeCardOpen=true;
+   }else if(!crimeCardOpen&&t.length>65&&/罪[，,]/.test(t)&&/(?:概念、构成特征|本章要求掌握|罪与非罪)/.test(t)){
+    out.push('<details class="crime-syllabus"><summary>本章涉及罪名及考查要求（展开）</summary><p data-search="'+esc(t.toLowerCase())+'">'+studyParts(t)+'</p></details>');
+    p=[];return;
+   }
+   const type=name?"crime-definition":/^(?:注意区分|要注意区分|本罪与|两罪的区别|二者的区别|区分的关键)/.test(t)?"crime-distinction":/^(?:在认定|注意|对于|在司法实践中)/.test(t)?"crime-recognition":"";
+   out.push('<p id="criminal-paragraph-'+(pIndex++)+'" class="'+cls+(type?" "+type:"")+'" data-search="'+esc(t.toLowerCase())+'">'+studyParagraph(t)+'</p>');
+  }else out.push('<p id="criminal-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+studyParagraph(t)+'</p>');
   p=[];
  };
  const renderListItem=x=>{
@@ -376,7 +418,7 @@ function renderMarkdown(text){
   }
   const h=t.match(/^(#{1,6})\s+(.+)$/);
   if(h){
-   flush();
+   flush();closeCrimeCard();
    const level=h[1].length,rawTitle=h[2].trim().replace(/\s+#+$/,"");
    const isTopic=/^▶\s*/.test(rawTitle);
    const title=rawTitle.replace(/^▶\s*/,"").replace(/^[一二三四五六七八九十]\s+(?=第[一二三四五六七八九十]+节)/,"").replace(/(\s+[一二三四五六七八九十])(?=\s*$)/,"").trim();
@@ -384,6 +426,8 @@ function renderMarkdown(text){
    const cm=title.match(/^(第[一二三四五六七八九十百]+章)\s*(.+)$/);
     const isChapter=!!cm;
     if(isChapter){const clean=title.split(/\s*[—–-]{2,}\s*/)[0].trim();chapterIds.push({title:clean,id});}
+    if(isChapter){inCrimeChapters=/^第(?:十四|十五|十六|十七|十八|十九|二十|二十一)章/.test(title);inCrimeDetails=false;}
+    else if(inCrimeChapters&&/本章要求掌握的内容/.test(title)){inCrimeDetails=true;}
     const currentChapter=chapterIds.length?chapterIds[chapterIds.length-1].title:"刑法学";
     const isSection=/第[一二三四五六七八九十百]+节/.test(title);
     headings.push({title,id,level,chapter:currentChapter,isChapter,isSection});
@@ -403,7 +447,8 @@ function renderMarkdown(text){
    const id="criminal-topic-"+(topicIndex++);
     const chapter=chapterIds.length?chapterIds[chapterIds.length-1].title:"刑法学";
     topics.push({title,id,chapter});
-   out.push('<h5 id="'+id+'" class="doc-subheading prompt" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');
+   if(inCrimeDetails&&title.length>60)out.push('<details class="crime-syllabus" id="'+id+'"><summary>本章涉及罪名及考查要求（展开）</summary><p data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</p></details>');
+   else out.push('<h5 id="'+id+'" class="doc-subheading prompt" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');
    continue;
   }
   if(!listType&&t.length>=2&&t.length<=42&&!/[。！？；，、,.!?;]/.test(t)&&! /^(?:【|[（(]|\d+[.、]|第[一二三四五六七八九十百]+[章节])/.test(t)){
@@ -430,7 +475,7 @@ function renderMarkdown(text){
   if(listType){items[items.length-1].text=joinStudyLines([items[items.length-1].text,t]);}
   else{p.push(t);}
  }
- flush();return out.join("\n");
+ flush();closeCrimeCard();return out.join("\n");
 }
 function activateTab(name){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+name));}
 function jumpTo(id){activateTab("analysis");const el=$(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
@@ -465,10 +510,20 @@ function searchFull(q){
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
 $("searchInput").oninput=e=>searchFull(e.target.value.trim());$("clearSearch").onclick=()=>{$("searchInput").value="";searchFull("");};
 $("topicSearch").oninput=filterTopics;$("clearTopics").onclick=()=>{$("topicSearch").value="";filterTopics();};
+function buildCrimePicker(){
+ const bar=$("crimeQuickbar"),sel=$("crimeJumpSelect");
+ if(!crimeIds.length){bar.style.display="none";return;}
+ const groups=[];let group=null;
+ for(const c of crimeIds){if(!group||group.chapter!==c.chapter){group={chapter:c.chapter,entries:[]};groups.push(group);}group.entries.push(c);}
+ sel.innerHTML='<option value="">选择罪名以定位正文</option>'+groups.map(g=>'<optgroup label="'+esc(g.chapter)+'">'+g.entries.map(c=>'<option value="'+c.id+'">'+esc(c.name)+'</option>').join("")+'</optgroup>').join("");
+ $("crimeJumpCount").textContent="已整理 "+crimeIds.length+" 个罪名条目";
+ sel.onchange=()=>{if(!sel.value)return;const target=$(sel.value);if(target){activateTab("analysis");target.scrollIntoView({behavior:"smooth",block:"start"});}};
+ bar.style.display="flex";
+}
 async function init(){
  try{
   const res=await fetch("./exam-analysis.md");if(!res.ok)throw new Error("知识库文件加载失败："+res.status);
-  md=await res.text();$("analysisContent").innerHTML=renderMarkdown(md);
+  md=await res.text();$("analysisContent").innerHTML=renderMarkdown(md);buildCrimePicker();
   const sectionCount=headings.filter(h=>h.isSection).length;
   $("chapterStat").textContent=chapterIds.length+"章";$("sectionStat").textContent=sectionCount+"节";$("headingStat").textContent=headings.length+"项";$("charStat").textContent=md.length.toLocaleString()+"字";
   $("sourceStatus").textContent="原文已完整载入";$("searchStatus").textContent="原文已加载";
