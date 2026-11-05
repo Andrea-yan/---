@@ -109,51 +109,82 @@ let md="",headings=[],topics=[],chapters=[],chapterIds=[],systems=[];
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
 function renderMarkdown(text){
- const lines=text.replace(/\r/g,"").split("\n"),out=[];let p=[],listType="",items=[],hIndex=0,topicIndex=0,pIndex=0,currentChapter="";
- const flushP=()=>{if(p.length){const t=p.join(" ").trim(),cls=t.startsWith("【分析】")?"analysis":"";out.push('<p id="history-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</p>');p=[];}};
+ const lines=text.replace(/\r/g,"").split("\n"),out=[];
+ let p=[],listType="",items=[],hIndex=0,topicIndex=0,pIndex=0,currentChapter="";
+ const flushP=()=>{
+  if(!p.length)return;
+  const t=p.join(" ").trim(),cls=t.startsWith("【分析】")?"analysis":"";
+  out.push('<p id="history-paragraph-'+(pIndex++)+'" class="'+cls+'" data-search="'+esc(t.toLowerCase())+'">'+inline(t)+'</p>');
+  p=[];
+ };
  const renderListItem=x=>{
   const raw=typeof x==="string"?x:x.text;
   const value=typeof x==="string"?null:x.value;
-  const m=raw.match(/^(.{2,18}?)([，,：:；。])/);
-  const body=m&&m[1].length<=16
+  const m=raw.match(/^(.{2,24}?)([，,：:；;。])/);
+  const lead=m?m[1].replace(/\*\*/g,"").trim():"";
+  const body=m&&lead.length>=2&&lead.length<=18
    ?'<strong class="answer-key">'+inline(m[1])+'</strong>'+inline(m[2]+raw.slice(m[0].length))
    :inline(raw);
   return '<li'+(value!==null?' value="'+value+'"':'')+'>'+body+'</li>';
  };
- const flushList=()=>{if(items.length){out.push("<"+listType+">"+items.map(renderListItem).join("")+"</"+listType+">");items=[];listType="";}};
+ const flushList=()=>{
+  if(!items.length)return;
+  const tag=listType==="ul"?"ul":listType==="alpha"?'ol type="A"':"ol";
+  out.push("<"+tag+">"+items.map(renderListItem).join("")+"</"+(listType==="ul"?"ul":"ol")+">");
+  items=[];listType="";
+ };
  const flush=()=>{flushP();flushList();};
  for(let i=0;i<lines.length;i++){
-  const t=lines[i].trim();if(!t){
+  const t=lines[i].trim();
+  if(!t){
    const next=lines.slice(i+1).map(x=>x.trim()).find(Boolean)||"";
-   const isBareHeading=s=>!!s&&s.length<=34&&!/[。！？；，、,.!?;]/.test(s)&&!/^([#>*▶【]|\d+[.、]|[-*]\s|[A-DＡ-Ｄ][.．、]|第[一二三四五六七八九十百]+[章节])/.test(s);
-   const isIncomplete=s=>!!s&&!/[。！？；.!?;]/.test(s.slice(-1));
-   const nextList=/^(\d+[.、]|[-*]\s+|[A-DＡ-Ｄ][.．、])/.test(next);
-   if(listType&&next&&((listType==="ol"&&(/^(\d+[.、]|[A-DＡ-Ｄ][.．、])/.test(next)))||(listType==="ul"&&/^[-*]\s+/.test(next))))continue;
-   if(listType&&items.length&&isIncomplete(items[items.length-1].text)&&next&&!nextList&&!isBareHeading(next)&&!/^([#▶【>])/.test(next))continue;
-   if(p.length===1&&isBareHeading(p[0])){
-    const title=p.pop();
-    out.push('<h5 class="doc-subheading" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');
-   }else if(p.length&&isIncomplete(p[p.length-1])&&next&&!nextList&&!isBareHeading(next)&&!/^([#▶【>])/.test(next))continue;
+   const nextOl=/^(\d+)[.、．)]\s*(.+)$/.test(next);
+   const nextAlpha=/^([A-DＡ-Ｄ])[.．、)]\s*(.+)$/.test(next);
+   const nextUl=/^[-*]\s+(.+)$/.test(next);
+   const nextType=nextOl?"ol":nextAlpha?"alpha":nextUl?"ul":"";
+   if(listType&&nextType===listType)continue;
    flush();continue;
   }
-  const h=t.match(/^(#{1,6})\s*(.+)$/);
+  const h=t.match(/^(#{1,6})\s+(.+)$/);
   if(h){
-   flush();const level=h[1].length,title=h[2].trim().replace(/\s+#+$/,""),id="history-heading-"+(hIndex++);
-   const cm=title.match(/(第[一二三四五六七八九十百]+章\s*.+)/),isChapter=level<=3&&!!cm;
-   if(isChapter){currentChapter=cm[1].trim();chapterIds.push({title:currentChapter,id});}
-   const rec={title,id,level,chapter:currentChapter,isChapter};headings.push(rec);
-   if(/^▶\s*/.test(title)){topics.push({title:title.replace(/^▶\s*/,"").trim(),id,chapter:currentChapter});}
-   out.push('<h'+level+' id="'+id+'" class="'+(isChapter?"chapter-heading":"")+'" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h'+level+'>');continue;
+   flush();
+   const level=h[1].length,rawTitle=h[2].trim().replace(/\s+#+$/,"");
+   const isTopic=/^▶\s*/.test(rawTitle),title=rawTitle.replace(/^▶\s*/,"").trim();
+   const id="history-heading-"+(hIndex++);
+   const cm=title.match(/(第[一二三四五六七八九十百]+章\s*.+)/);
+    const isChapter=level<=3&&!!cm;
+    if(isChapter){currentChapter=cm[1].trim();chapterIds.push({title:currentChapter,id});}
+    headings.push({title,id,level,chapter:currentChapter,isChapter});
+    if(isTopic)topics.push({title,id,chapter:currentChapter});
+   const classes=[];
+   if(isChapter)classes.push("chapter-heading");
+   if(isTopic||level>=5)classes.push("doc-subheading");
+   if(isTopic)classes.push("source-topic");
+   out.push('<h'+Math.min(level,6)+' id="'+id+'" class="'+classes.join(" ")+'" data-search="'+esc((rawTitle+" "+title).toLowerCase())+'">'+inline(title)+'</h'+Math.min(level,6)+'>');
+   continue;
   }
   if(/^▶\s*/.test(t)){
-   flush();const title=t.replace(/^▶\s*/,"").trim(),id="history-topic-"+(topicIndex++);
-   topics.push({title,id,chapter:currentChapter});
-   out.push('<div class="prompt" id="'+id+'" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</div>');continue;
+   flush();
+   const title=t.replace(/^▶\s*/,"").trim();
+   const id="history-topic-"+(topicIndex++);
+    topics.push({title,id,chapter:currentChapter});
+   out.push('<h5 id="'+id+'" class="doc-subheading prompt" data-search="'+esc(title.toLowerCase())+'">'+inline(title)+'</h5>');
+   continue;
   }
-  const ol=t.match(/^\d+[.、]\s*(.+)$/),ul=t.match(/^[-*]\s+(.+)$/);
-  if(ol||ul){flushP();const typ=ol?"ol":"ul";if(listType&&listType!==typ)flushList();listType=typ;items.push({text:(ol||ul)[1],value:ol?Number(ol[0].match(/^\d+/)[0]):null});continue;}
-  if(/^>\s?/.test(t)){flushP();flushList();out.push("<blockquote>"+inline(t.replace(/^>\s?/,""))+"</blockquote>");continue;}
-  if(listType){items[items.length-1].text+=" "+t;}else{p.push(t);}
+  const ol=t.match(/^(\d+)[.、．)]\s*(.+)$/);
+  const alpha=t.match(/^([A-DＡ-Ｄ])[.．、)]\s*(.+)$/);
+  const ul=t.match(/^[-*]\s+(.+)$/);
+  if(ol||alpha||ul){
+   flushP();
+   const typ=ol?"ol":alpha?"alpha":"ul";
+   if(listType&&listType!==typ)flushList();
+   listType=typ;
+   const value=ol?Number(ol[1]):alpha?alpha[1].toUpperCase().charCodeAt(0)-"A".charCodeAt(0)+1:null;
+   items.push({text:(ol||alpha||ul)[2],value});
+   continue;
+  }
+  if(listType){items[items.length-1].text+=" "+t;}
+  else{p.push(t);}
  }
  flush();return out.join("\n");
 }
