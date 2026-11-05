@@ -96,7 +96,7 @@ function renderMarkdown(text){
  for(let i=0;i<lines.length;i++){
   const t=lines[i].trim();if(!t){
    const next=lines.slice(i+1).map(x=>x.trim()).find(Boolean)||"";
-   const isBareHeading=s=>!!s&&s.length<=30&&!/[。！？；：，、,.!?;:]/.test(s)&&!/^([#>*▶【]|\d+[.、]|[-*]\s|[A-DＡ-Ｄ][.．、]|第[一二三四五六七八九十百]+[章节])/.test(s);
+   const isBareHeading=s=>!!s&&s.length<=34&&!/[。！？；，、,.!?;]/.test(s)&&!/^([#>*▶【]|\d+[.、]|[-*]\s|[A-DＡ-Ｄ][.．、]|第[一二三四五六七八九十百]+[章节])/.test(s);
    const isIncomplete=s=>!!s&&!/[。！？；.!?;]/.test(s.slice(-1));
    const nextList=/^(\d+[.、]|[-*]\s+|[A-DＡ-Ｄ][.．、])/.test(next);
    if(listType&&next&&((listType==="ol"&&(/^(\d+[.、]|[A-DＡ-Ｄ][.．、])/.test(next)))||(listType==="ul"&&/^[-*]\s+/.test(next))))continue;
